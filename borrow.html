@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Equipment</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #EEF1FF, #D2DAFF);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .top-bar {
+            background: #B1B2FF;
+            padding: 10px 20px;
+            width: 100%;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .logo-container img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .logo-container h2 {
+            color: #000000;
+            font-size: 22px;
+            margin: 0;
+            font-weight: bold;
+        }
+        .nav-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            background: #FFFFFF;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            padding: 10px 0;
+        }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-menu li {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #5f6368;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 20px 20px 0 0;
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+        }
+        .nav-menu li i {
+            font-size: 18px;
+        }
+        .nav-menu li:hover {
+            background: #F1F3F4;
+        }
+        .nav-menu li.active {
+            color: #1A73E8;
+            font-weight: bold;
+            background: #FFFFFF;
+            box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.1);
+        }
+        .content-wrapper {
+            margin-top: 150px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .content {
+            padding: 30px;
+            text-align: center;
+            color: #333;
+            font-size: 20px;
+            width: 80%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn-save {
+            background: #1A73E8;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 15px;
+        }
+        .btn-save:hover {
+            background: #1558C3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo"> 
+            <h2>Computer Engineering</h2>
+        </div>
+    </div>
+
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li id="home" onclick="navigateTo('dashboard.html')"><i class="fas fa-home"></i> Home</li>
+            <li id="equipment" onclick="navigateTo('equipment.html')"><i class="fas fa-tools"></i> Equipment</li>
+            <li id="borrow" onclick="navigateTo('borrow.html')"><i class="fas fa-hand-holding"></i> Borrow</li>
+            <li id="return" onclick="navigateTo('return.html')"><i class="fas fa-undo"></i> Return</li>
+            <li id="history" onclick="navigateTo('history.html')"><i class="fas fa-history"></i> History</li>
+            <li id="user" onclick="navigateTo('user_info.html')"><i class="fas fa-user"></i> User</li>
+            <li id="about" onclick="navigateTo('about.html')"><i class="fas fa-info-circle"></i> About Us</li>
+        </ul>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="content">
+            <h2>BORROW EQUIPMENT</h2>
+            <div class="input-group">
+                <label for="user-id">User ID</label>
+                <input type="text" id="user-id" placeholder="Scan or Enter User ID">
+            </div>
+            <div class="input-group">
+                <label for="equipment-serial">Equipment Serial Number</label>
+                <input type="text" id="equipment-serial" placeholder="Scan or Enter Equipment Serial">
+            </div>
+            <button class="btn-save" onclick="saveBorrow()">Borrow</button>
+        </div>
+    </div>
+
+    <script>
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        function setActiveTab() {
+            document.getElementById("borrow").classList.add("active");
+        }
+
+        function saveBorrow() {
+            const userID = document.getElementById("user-id").value.trim();
+            const equipmentSerial = document.getElementById("equipment-serial").value.trim();
+
+            if (!userID || !equipmentSerial) {
+                alert("Both User ID and Equipment Serial Number are required.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("userID", userID);
+            formData.append("equipmentSerial", equipmentSerial);
+
+            fetch("borrow_equipment.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while processing the request.");
+            });
+        }
+
+        window.onload = setActiveTab;
+
+        function saveBorrow() {
+            const userID = document.getElementById("user-id").value.trim();
+            const equipmentSerial = document.getElementById("equipment-serial").value.trim();
+
+            if (!userID || !equipmentSerial) {
+                alert("Both User ID and Equipment Serial Number are required.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("userID", userID);
+            formData.append("equipmentSerial", equipmentSerial);
+
+            fetch("borrow_equipment.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while processing the request.");
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #EEF1FF, #D2DAFF);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Center vertically */
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0px;
+      left: -300px;
+      width: 1000px;
+      height: 100%;
+      background-image: url('logo.png');
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: 1000px;
+      opacity: 0.1;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .login-wrapper,
+    .page-title {
+      z-index: 1;
+      position: relative;
+    }
+
+    .page-title {
+      font-family: Georgia;
+      font-size: 35px;
+      font-weight: bold;
+      color: #333;
+      margin-top: 40px;
+      margin-bottom: 40px;
+      max-width: 100%;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .login-wrapper {
+      background-color: #ffffff;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .login-wrapper h1 {
+      margin-bottom: 25px;
+      color: #333;
+      font-size: 30px;
+    }
+
+    .login-wrapper input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 25px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      background: #fff;
+    }
+
+    .login-wrapper input[type="password"]:focus {
+      border-color: #5A67D8;
+      outline: none;
+      box-shadow: 0 0 6px rgba(90, 103, 216, 0.4);
+    }
+
+    .login-wrapper button {
+      width: 100%;
+      padding: 14px;
+      background-color: #5A67D8;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-wrapper button:hover {
+      background-color: #434190;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .modal-content button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #D32F2F;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .modal-content button:hover {
+      background-color: #B71C1C;
+    }
+
+    #keyboard {
+      display: none;
+      margin-top: 20px;
+      z-index: 1;
+    }
+
+    .keyboard-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .key-button {
+      width: 42px;
+      height: 45px;
+      margin: 3px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #E0E0FF;
+      transition: background 0.2s ease;
+    }
+
+    .key-button:hover {
+      background: #C5C5FF;
+    }
+
+    .kb-btn {
+      font-size: 24px;
+      font-weight: bold;
+      padding: 20px 26px;
+      min-width: 70px;
+      background: #B1B2FF;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .kb-btn:hover {
+      background: #6f71f5;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 class="page-title" style="font-size: 55px;">
+    A Web-Based Equipment Management System for<br>
+    Optimizing Asset Maintenance and<br>
+    Resource Allocation
+  </h2>
+
+  <div class="login-wrapper">
+    <h1>🔒 Enter Password</h1>
+    <form action="login.php" method="POST">
+      <input type="password" name="password" id="passwordInput" placeholder="Password" required onclick="showKeyboard()" readonly />
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <div id="keyboard" style="display: none; margin-top: 30px;">
+    <div style="background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 0 12px rgba(0,0,0,0.25); display: inline-block;">
+      <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+        <button onclick="addKey('1')" class="kb-btn">1</button>
+        <button onclick="addKey('2')" class="kb-btn">2</button>
+        <button onclick="addKey('3')" class="kb-btn">3</button>
+        <button onclick="addKey('4')" class="kb-btn">4</button>
+        <button onclick="addKey('5')" class="kb-btn">5</button>
+        <button onclick="addKey('6')" class="kb-btn">6</button>
+        <button onclick="addKey('7')" class="kb-btn">7</button>
+        <button onclick="addKey('8')" class="kb-btn">8</button>
+        <button onclick="addKey('9')" class="kb-btn">9</button>
+        <button onclick="addKey('0')" class="kb-btn">0</button>
+        <button onclick="addKey('-')" class="kb-btn">-</button>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-bottom: 12px; margin-left: 35px;">
+        <button onclick="addKey('Q')" class="kb-btn">Q</button>
+        <button onclick="addKey('W')" class="kb-btn">W</button>
+        <button onclick="addKey('E')" class="kb-btn">E</button>
+        <button onclick="addKey('R')" class="kb-btn">R</button>
+        <button onclick="addKey('T')" class="kb-btn">T</button>
+        <button onclick="addKey('Y')" class="kb-btn">Y</button>
+        <button onclick="addKey('U')" class="kb-btn">U</button>
+        <button onclick="addKey('I')" class="kb-btn">I</button>
+        <button onclick="addKey('O')" class="kb-btn">O</button>
+        <button onclick="addKey('P')" class="kb-btn">P</button>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-bottom: 12px; margin-left: 25px;">
+        <button onclick="addKey('A')" class="kb-btn">A</button>
+        <button onclick="addKey('S')" class="kb-btn">S</button>
+        <button onclick="addKey('D')" class="kb-btn">D</button>
+        <button onclick="addKey('F')" class="kb-btn">F</button>
+        <button onclick="addKey('G')" class="kb-btn">G</button>
+        <button onclick="addKey('H')" class="kb-btn">H</button>
+        <button onclick="addKey('J')" class="kb-btn">J</button>
+        <button onclick="addKey('K')" class="kb-btn">K</button>
+        <button onclick="addKey('L')" class="kb-btn">L</button>
+        <button onclick="clearPassword()" class="kb-btn" style="background: #D32F2F; color: white;">Clear</button>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-left: 35px;">
+        <button onclick="addKey('Z')" class="kb-btn">Z</button>
+        <button onclick="addKey('X')" class="kb-btn">X</button>
+        <button onclick="addKey('C')" class="kb-btn">C</button>
+        <button onclick="addKey('V')" class="kb-btn">V</button>
+        <button onclick="addKey('B')" class="kb-btn">B</button>
+        <button onclick="addKey('N')" class="kb-btn">N</button>
+        <button onclick="addKey('M')" class="kb-btn">M</button>
+        <button onclick="moveCursorLeft()" class="kb-btn">←</button>
+        <button onclick="deleteKey()" class="kb-btn">⌫</button>
+        <button onclick="moveCursorRight()" class="kb-btn">→</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loginErrorModal" class="modal">
+    <div class="modal-content">
+      <p id="loginErrorMessage">❌ Incorrect password. Please try again.</p>
+      <button onclick="closeLoginErrorModal()">OK</button>
+    </div>
+  </div>
+
+  <script>
+    let focusedInput = document.getElementById("passwordInput");
+
+    function addKey(char) {
+      if (focusedInput) {
+        const input = focusedInput;
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const text = input.value;
+        input.value = text.slice(0, start) + char + text.slice(end);
+        input.setSelectionRange(start + 1, start + 1);
+        input.focus();
+      }
+    }
+
+    function deleteKey() {
+      if (focusedInput) {
+        const input = focusedInput;
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const text = input.value;
+
+        if (start === end && start > 0) {
+          input.value = text.slice(0, start - 1) + text.slice(end);
+          input.setSelectionRange(start - 1, start - 1);
+        } else {
+          input.value = text.slice(0, start) + text.slice(end);
+          input.setSelectionRange(start, start);
+        }
+
+        input.focus();
+      }
+    }
+
+    function clearPassword() {
+      if (focusedInput) {
+        focusedInput.value = "";
+        focusedInput.focus();
+      }
+    }
+
+    function moveCursorLeft() {
+      if (focusedInput) {
+        const input = focusedInput;
+        const pos = input.selectionStart;
+        if (pos > 0) {
+          input.setSelectionRange(pos - 1, pos - 1);
+          input.focus();
+        }
+      }
+    }
+
+    function moveCursorRight() {
+      if (focusedInput) {
+        const input = focusedInput;
+        const pos = input.selectionStart;
+        if (pos < input.value.length) {
+          input.setSelectionRange(pos + 1, pos + 1);
+          input.focus();
+        }
+      }
+    }
+
+    function showKeyboard() {
+      document.getElementById("keyboard").style.display = "block";
+    }
+    document.addEventListener("click", function (e) {
+      const keyboard = document.getElementById("keyboard");
+      const input = document.getElementById("passwordInput");
+      if (!keyboard.contains(e.target) && e.target !== input) {
+        keyboard.style.display = "none";
+      }
+    });
+
+    window.onload = function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('error')) {
+        document.getElementById("loginErrorModal").style.display = "flex";
+      }
+    }
+
+    function closeLoginErrorModal() {
+      document.getElementById("loginErrorModal").style.display = "none";
+    }
+  </script>
+</body>
+</html>

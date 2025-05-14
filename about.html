@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #EEF1FF, #D2DAFF);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .top-bar {
+            background: #B1B2FF;
+            padding: 20px 30px;
+            width: 100%;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            }
+
+            .logo-container {
+            display: flex;
+            align-items: center;
+            }
+
+            .logo-container img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+            }
+
+            .logo-container h2 {
+            color: #000;
+            font-size: 22px;
+            margin: 0;
+            font-weight: bold;
+            }
+
+            .nav-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            background: #FFFFFF;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            padding: 16px 0;
+            }
+
+            .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            }
+
+            .nav-menu li {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #5f6368;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 20px 20px 0 0;
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+            }
+
+            .nav-menu li i {
+            font-size: 18px;
+            }
+
+            .nav-menu li:hover {
+            background: #F1F3F4;
+            }
+
+            .nav-menu li.active {
+            color: #1A73E8;
+            font-weight: bold;
+            background: #FFFFFF;
+            box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.1);
+            }
+
+        .content-wrapper {
+            margin-top: 170px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content {
+            padding: 30px;
+            text-align: center;
+            color: #333;
+            font-size: 20px;
+            width: 100%;
+            max-width: 1700px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-container {
+            margin-bottom: 30px;
+        }
+
+        .adviser {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .adviser img {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            border: 3px solid #1A73E8;
+            margin-bottom: 10px;
+        }
+
+        .adviser h4 {
+            font-size: 25px;
+            margin: 5px 0;
+        }
+
+        .adviser p {
+            font-size: 20px;
+            color: #555;
+        }
+
+        .team-members {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .team-member {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .team-member img {
+            width: 125px;
+            height: 125px;
+            border-radius: 50%;
+            border: 3px solid #1A73E8;
+            margin-bottom: 10px;
+        }
+
+        .team-member h4 {
+            font-size: 20px;
+            margin: 5px 0;
+        }
+
+        .team-member p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu li {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+
+            .nav-menu li i {
+                font-size: 16px;
+            }
+
+            .logo-container img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .logo-container h2 {
+                font-size: 18px;
+            }
+        }
+
+        .logout-btn:hover {
+            color: red;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+            }
+
+            .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo"> 
+            <h2>Computer Engineering</h2>
+        </div>
+    </div>
+
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li id="home" onclick="navigateTo('dashboard.html')"><i class="fas fa-home"></i> Home</li>
+            <li id="equipment" onclick="navigateTo('equipment.html')"><i class="fas fa-tools"></i> Equipment</li>
+            <li id="history" onclick="navigateTo('history.html')"><i class="fas fa-history"></i> History</li>
+            <li id="user" onclick="navigateTo('user_info.html')"><i class="fas fa-user"></i> User</li>
+            <li id="about" class="active" onclick="navigateTo('about.html')"><i class="fas fa-info-circle"></i> About Us</li>
+            <li id="logout" onclick="confirmLogout()" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+            </li>    
+        </ul>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="content">
+            <div class="about-container">
+                <h3 style="font-size: 50px;">Web-Based Equipment Management System</h3>
+                <p style="font-size: 30px;">
+                    This system optimizes asset maintenance and resource allocation for the Computer Engineering Department (DCpE)
+                    at<br> Mariano Marcos State University (MMSU) College of Engineering (COE).
+                </p>
+            </div>
+
+            <div class="team-section">
+                <h3>Our Team</h3>
+
+                <div class="adviser">
+                    <img src="adviser.jpg" alt="Adviser">
+                    <h4>Engr. Christian Rick C. Asuncion</h4>
+                    <p>Adviser</p>
+                </div>
+
+                <div class="team-members">
+                    <div class="team-member"><img src="3.jpg"><h4>Yrexton A. Asuncion</h4><p>yrexton21@gmail.com</p></div>
+                    <div class="team-member"><img src="6.jpg"><h4>Roel Christian V. Galinato</h4><p>lucianlycan510@gmail.com</p></div>
+                    <div class="team-member"><img src="12.jpg"><h4>Celestia Mei L. Campos</h4><p>celestiameicampos@gmail.com</p></div>
+                    <div class="team-member"><img src="9.png"><h4>Florence Joy C. Nebab</h4><p>florencejoynebab@gmail.com</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+          <p>Are you sure you want to log out?</p>
+          <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+            <button id="logoutYes" style="background-color: #1A73E8; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Yes</button>
+            <button id="logoutNo" style="background-color: #D32F2F; color: white; padding: 10px 20px; border: none; border-radius: 5px;">No</button>
+          </div>
+        </div>
+      </div>      
+
+    <script>
+        function navigateTo(page) { window.location.href = page; }
+
+        function confirmLogout() {
+            const modal = document.getElementById("logoutModal");
+            modal.style.display = "flex";
+
+            const yesBtn = document.getElementById("logoutYes");
+            const noBtn = document.getElementById("logoutNo");
+
+            const cleanup = () => {
+                modal.style.display = "none";
+                yesBtn.onclick = null;
+                noBtn.onclick = null;
+            };
+
+            yesBtn.onclick = () => {
+                cleanup();
+                navigateTo('login.html');
+            };
+
+            noBtn.onclick = () => {
+                cleanup();
+            };
+        }
+    </script>
+</body>
+</html>  

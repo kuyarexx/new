@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Equipment</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right, #eef1ff, #d2daff);
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .top-bar {
+        background: #B1B2FF;
+        padding: 20px 30px;
+        width: 100%;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo-container img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .logo-container h2 {
+        color: #000;
+        font-size: 22px;
+        margin: 0;
+        font-weight: bold;
+      }
+
+      .nav-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        background: #FFFFFF;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+        padding: 16px 0; 
+      }
+
+      .nav-menu {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-menu li {
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        color: #5f6368;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 20px 20px 0 0;
+        transition: background 0.3s ease, color 0.3s ease;
+        position: relative;
+      }
+
+      .nav-menu li i {
+        font-size: 18px;
+      }
+
+      .nav-menu li:hover {
+        background: #F1F3F4;
+      }
+
+      .nav-menu li.active {
+        color: #1A73E8;
+        font-weight: bold;
+        background: #FFFFFF;
+        box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .content-wrapper {
+        margin-top: 170px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .content {
+        padding: 30px;
+        text-align: center;
+        color: #333;
+        font-size: 20px;
+        width: 100%;
+        max-width: 1700px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 16px;
+      }
+      th {
+        background: #f8f9fa;
+        color: black;
+        font-size: 18px;
+        text-transform: uppercase;
+        border-bottom: 2px solid #b1b2ff;
+      }
+      tr:nth-child(even) {
+        background: #f8f9fa;
+      }
+      tr:hover {
+        background: #e0e0e0;
+        transition: 0.3s ease-in-out;
+      }
+
+      .status-box {
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        display: inline-block;
+      }
+
+      .status-available {
+        background-color: green;
+      }
+
+      .status-borrowed {
+        background-color: orange;
+      }
+
+      .status-condemn {
+        background-color: red;
+      }
+
+      .table-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        margin-bottom: 10px;
+      }
+      .search-container {
+        display: flex;
+        align-items: center;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 22px;
+        padding: 20px 40px;
+        width: 400px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .search-container i {
+        font-size: 12px;
+        color: #5f6368;
+        margin-right: 8px;
+      }
+      .search-container input {
+        border: none;
+        outline: none;
+        font-size: 16px;
+        width: 100%;
+        background: transparent;
+      }
+
+      .add-button {
+        background: #1a73e8;
+        color: #ffffff;
+        border: none;
+        padding: 20px 40px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+        margin: 0 5px;
+      }
+      .add-button:hover {
+        background: #1558c3;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .action-btn {
+        background: #1a73e8;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background 0.3s ease;
+        margin: 2px;
+      }
+
+      .action-btn:hover {
+        background: #1558c3;
+      }
+
+      .delete-btn {
+        background: red;
+      }
+
+      .delete-btn:hover {
+        background: darkred;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      .modal-content {
+        background: #ffffff;
+        margin: 5% auto;
+        margin-top: 200px;
+        padding: 20px 30px;
+        width: 90%;
+        max-width: 1400px; /* Wider modal */
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        position: relative;
+        animation: scaleIn 0.3s ease-in-out;
+      }
+
+      .modal-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 50px;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .modal-form .form-column {
+        flex: 1 1 48%;
+      }
+
+      .modal-form .form-column label,
+      .modal-form .form-column input,
+      .modal-form .form-column select {
+        display: block;
+        width: 100%;
+      }
+
+      .modal-content h3 {
+        margin-top: 0;
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+      }
+
+      .modal-content label {
+        display: block;
+        text-align: left;
+        margin: 10px 0 5px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #444;
+      }
+
+      .modal-content input,
+      .modal-content select {
+        width: 97%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        transition: border 0.3s ease;
+      }
+
+      .modal-content input:focus,
+      .modal-content select:focus {
+        border-color: #1a73e8;
+        outline: none;
+      }
+
+      .modal-content button {
+        background: #1a73e8;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background 0.3s ease;
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .modal-content button:hover {
+        background: #1558c3;
+      }
+
+      .close-button {
+        color: #555;
+        font-size: 24px;
+        font-weight: bold;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .close-button:hover {
+        color: #000;
+      }
+
+      .logout-btn:hover {
+        color: red;
+      }
+
+      #confirmYes {
+        background-color: #1a73e8;
+        color: white;
+      }
+
+      #confirmNo {
+        background-color: #d32f2f;
+        color: white;
+      }
+
+      #confirmYes:hover {
+        background-color: #1666c1;
+      }
+
+      #confirmNo:hover {
+        background-color: #b71c1c;
+      }
+
+      #successModal button {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      #successModal button:hover {
+        background-color: #45a049;
+      }
+
+      .equipment-details-modal {
+        display: inline-block;
+        text-align: left;
+        padding: 25px;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        max-width: 90vw;
+      }
+
+      #equipmentDetailsModal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(5px);
+        text-align: center;
+      }
+
+      #equipmentDetailsModal table {
+        margin: 20px auto 0;
+        border-collapse: collapse;
+        width: auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      #equipmentDetailsModal th,
+      #equipmentDetailsModal td {
+        padding: 12px 16px;
+        font-size: 15px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+
+      #equipmentDetailsModal td .action-btn,
+      #equipmentDetailsModal td .delete-btn {
+        margin: 2px 0;
+        padding: 6px 12px;
+        font-size: 14px;
+      }
+
+      #equipmentDetailsModal .download-btns {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .table-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1700px;
+        margin-bottom: 10px;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 10px;
+      }
+
+      .keyboard {
+        position: fixed;
+        right: 5%;
+        top: 20%;
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        z-index: 1002;
+      }
+
+      .keyboard-row {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+      }
+
+      .keyboard-row button {
+        padding: 12px 20px;
+        margin: 3px;
+        font-size: 16px;
+        border: none;
+        background: #B1B2FF;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        flex: 1;             
+        min-width: 80px;    
+        text-align: center;
+      }
+
+      .keyboard-row button:hover {
+        background-color: #8f91ff;
+      }
+      .keyboard-container {
+        margin-top: -70px;
+        padding: 20px;
+        background: #f5f6ff;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: fit-content;
+        margin-left: 300px;
+        margin-bottom: 30px;
+      }
+
+      #viewDetailsModal {
+        display: none;
+        position: fixed;
+        z-index: 2100; /* Higher than equipmentDetailsModal */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(5px);
+        text-align: center;
+      }
+
+      #confirmationModal {
+        display: none;
+        position: fixed;
+        z-index: 2500; /* <- Add this line or increase its value */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+      }
+
+      #confirmationModal .modal-content,
+      #logoutConfirmationModal .modal-content,
+      #deleteConfirmationModal .modal-content {
+        width: 100%;
+        max-width: 400px;
+        padding: 25px 20px;
+        margin: 15% auto;
+        margin-top: 320px;
+        border-radius: 12px;
+        background-color: #ffffff;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        text-align: center;
+      }
+
+      #successModal {
+        display: none;
+        position: fixed;
+        z-index: 3000; /* Make sure it's above #viewDetailsModal (z-index: 2100) */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(3px);
+      }
+
+      #successModal .modal-content {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        position: absolute;
+        top: 100px; /* Place it above the details modal */
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 12px;
+        background-color: #ffffff;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        animation: slideDown 0.4s ease;
+      }
+
+      .search-wrapper {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .search-keyboard-floating {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 8px;
+        z-index: 2000;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        padding: 10px;
+      }
+
+      .search-keyboard-floating .keyboard-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 5px 0;
+      }
+
+      .search-keyboard-floating button {
+        padding: 10px 15px;
+        margin: 3px;
+        font-size: 14px;
+        border: none;
+        background: #B1B2FF;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        min-width: 40px;
+      }
+
+      .search-keyboard-floating button:hover {
+        background-color: #8f91ff;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="top-bar">
+      <div class="logo-container">
+        <img src="logo.png" alt="Logo" />
+        <h2>Computer Engineering</h2>
+      </div>
+    </div>
+
+    <div class="nav-container">
+      <ul class="nav-menu">
+        <li id="home" onclick="navigateTo('dashboard.html')">
+          <i class="fas fa-home"></i> Home
+        </li>
+        <li id="equipment" onclick="navigateTo('equipment.html')">
+          <i class="fas fa-tools"></i> Equipment
+        </li>
+        <li id="history" onclick="navigateTo('history.html')">
+          <i class="fas fa-history"></i> History
+        </li>
+        <li id="user" onclick="navigateTo('user_info.html')">
+          <i class="fas fa-user"></i> User
+        </li>
+        <li id="about" onclick="navigateTo('about.html')">
+          <i class="fas fa-info-circle"></i> About Us
+        </li>
+        <li id="logout" onclick="confirmLogout()" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Log Out
+        </li>
+      </ul>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <h2 style="font-size: 70px; margin-top: -10px;">EQUIPMENT</h2>
+
+        <div class="table-controls">
+          <!-- Search bar with floating keyboard -->
+          <div class="search-wrapper">
+            <div class="search-container">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                id="searchBar"
+                placeholder="Search Equipment Name..."
+                onkeyup="searchUsers()"
+              />
+              <button onclick="toggleSearchKeyboard()" style="background: none; border: none; margin-left: 10px; cursor: pointer;">
+                <i class="fas fa-keyboard" style="font-size: 20px; color: #1a73e8;"></i>
+              </button>
+            </div>
+            <div class="search-keyboard-floating" id="searchKeyboard" style="display: none;"></div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="button-group">
+            <button class="add-button" onclick="openModal()">+ Add New Equipment</button>
+            <button class="add-button" onclick="downloadAllQRCodes()">Download All QR Codes</button>
+            <button class="add-button" onclick="window.location.href='export_equipment.php'">Download All Data</button>
+          </div>
+        </div>
+
+        <!-- Equipment Table -->
+        <table>
+          <thead>
+            <tr>
+              <th>Equipment Name</th>
+              <th>Total Number</th>
+              <th>Available</th>
+              <th>Borrowed</th>
+            </tr>
+          </thead>
+          <tbody id="equipmentTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="keyboard-container" id="searchKeyboard" style="display: none; margin-top: -380px; margin-right: -200px;">
+      <div class="keyboard-row">
+        ${[..."1234567890"].map(n => `<button onclick="insertKey('${n}')">${n}</button>`).join("")}
+      </div>
+      <div class="keyboard-row">
+        ${[..."qwertyuiop"].map(c => `<button data-char="${c}" onclick="insertKey('${c}')" data-key-type="letter">${c}</button>`).join("")}
+      </div>
+      <div class="keyboard-row">
+        ${[..."asdfghjkl"].map(c => `<button data-char="${c}" onclick="insertKey('${c}')" data-key-type="letter">${c}</button>`).join("")}
+      </div>
+      <div class="keyboard-row">
+        ${[..."zxcvbnm"].map(c => `<button data-char="${c}" onclick="insertKey('${c}')" data-key-type="letter">${c}</button>`).join("")}
+      </div>
+      <div class="keyboard-row">
+        <button onclick="toggleShift()" id="searchShiftKey">Shift</button>
+        <button onclick="insertKey(' ')">Space</button>
+        <button onclick="deleteKey()">⌫</button>
+        <button onclick="clearInput()">Clear</button>
+      </div>
+    </div>
+
+    <div class="modal" id="addEquipmentModal">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <h3>Add New Equipment</h3>
+        <div class="modal-form">
+          <div class="form-column">
+            <label for="equipmentName">Equipment Name:</label>
+            <input type="text" id="equipmentName" placeholder="Enter Equipment Name" required autocomplete="off" />
+
+            <label for="yearPurchased">Year Purchased:</label>
+            <input type="text" id="yearPurchased" placeholder="Enter Year" inputmode="numeric" pattern="\d*" maxlength="4" required autocomplete="off" />
+
+            <label for="modelNumber">Model Number:</label>
+            <input type="text" id="modelNumber" placeholder="Enter Model Number" required autocomplete="off" />
+
+            <label for="acquisitionCost">Acquisition Cost:</label>
+            <input type="text" id="acquisitionCost" placeholder="Enter Acquisition Cost" inputmode="numeric" pattern="\d*\.?\d*" required autocomplete="off" />
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" placeholder="Enter Location" required autocomplete="off" />
+          </div>
+
+          <div class="form-column">
+            <label for="brand">Brand:</label>
+            <input type="text" id="brand" placeholder="Enter Brand" required autocomplete="off" />
+
+            <label for="propertyNumber">Property Number:</label>
+            <input type="text" id="propertyNumber" placeholder="Enter Property Number" required autocomplete="off" />
+
+            <label for="acquisitionDate">Acquisition Date:</label>
+            <input type="date" id="acquisitionDate" required autocomplete="off" />
+
+            <label for="personAccountable">Person Accountable:</label>
+            <input type="text" id="personAccountable" placeholder="Enter Person Accountable" required autocomplete="off" />
+          </div>
+        </div>
+
+        <button onclick="confirmAddEquipment()">Add Equipment</button>
+      </div>
+      <div class="keyboard-container">
+        <div id="equipmentKeyboard">
+      <!-- Number Row -->
+      <div class="keyboard-row">
+        <button onclick="insertKey('1')">1</button>
+        <button onclick="insertKey('2')">2</button>
+        <button onclick="insertKey('3')">3</button>
+        <button onclick="insertKey('4')">4</button>
+        <button onclick="insertKey('5')">5</button>
+        <button onclick="insertKey('6')">6</button>
+        <button onclick="insertKey('7')">7</button>
+        <button onclick="insertKey('8')">8</button>
+        <button onclick="insertKey('9')">9</button>
+        <button onclick="insertKey('0')">0</button>
+      </div>
+
+      <!-- QWERTY Rows -->
+      <div class="keyboard-row">
+        <button data-char="q" onclick="insertKey('q')" data-key-type="letter">q</button>
+        <button data-char="w" onclick="insertKey('w')" data-key-type="letter">w</button>
+        <button data-char="e" onclick="insertKey('e')" data-key-type="letter">e</button>
+        <button data-char="r" onclick="insertKey('r')" data-key-type="letter">r</button>
+        <button data-char="t" onclick="insertKey('t')" data-key-type="letter">t</button>
+        <button data-char="y" onclick="insertKey('y')" data-key-type="letter">y</button>
+        <button data-char="u" onclick="insertKey('u')" data-key-type="letter">u</button>
+        <button data-char="i" onclick="insertKey('i')" data-key-type="letter">i</button>
+        <button data-char="o" onclick="insertKey('o')" data-key-type="letter">o</button>
+        <button data-char="p" onclick="insertKey('p')" data-key-type="letter">p</button>
+      </div>
+      <div class="keyboard-row">
+        <button data-char="a" onclick="insertKey('a')" data-key-type="letter">a</button>
+        <button data-char="s" onclick="insertKey('s')" data-key-type="letter">s</button>
+        <button data-char="d" onclick="insertKey('d')" data-key-type="letter">d</button>
+        <button data-char="f" onclick="insertKey('f')" data-key-type="letter">f</button>
+        <button data-char="g" onclick="insertKey('g')" data-key-type="letter">g</button>
+        <button data-char="h" onclick="insertKey('h')" data-key-type="letter">h</button>
+        <button data-char="j" onclick="insertKey('j')" data-key-type="letter">j</button>
+        <button data-char="k" onclick="insertKey('k')" data-key-type="letter">k</button>
+        <button data-char="l" onclick="insertKey('l')" data-key-type="letter">l</button>
+      </div>
+      <div class="keyboard-row">
+        <button data-char="z" onclick="insertKey('z')" data-key-type="letter">z</button>
+        <button data-char="x" onclick="insertKey('x')" data-key-type="letter">x</button>
+        <button data-char="c" onclick="insertKey('c')" data-key-type="letter">c</button>
+        <button data-char="v" onclick="insertKey('v')" data-key-type="letter">v</button>
+        <button data-char="b" onclick="insertKey('b')" data-key-type="letter">b</button>
+        <button data-char="n" onclick="insertKey('n')" data-key-type="letter">n</button>
+        <button data-char="m" onclick="insertKey('m')" data-key-type="letter">m</button>
+      </div>
+
+      <!-- Special + Control Keys -->
+      <div class="keyboard-row">
+        <button onclick="toggleShift()" id="shiftKey">Shift</button>
+        <button onclick="insertKey(' ')">Space</button>
+        <button onclick="deleteKey()">⌫</button>
+        <button onclick="clearInput()">Clear</button>
+      </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="modal" id="equipmentDetailsModal">
+      <div class="modal-content equipment-details-modal">
+        <span class="close-button" onclick="closeDetailsModal()">&times;</span>
+        <h3 id="modalTitle">Equipment Details</h3>
+        <div class="download-btns">
+          <button class="add-button" onclick="downloadEquipmentDetails()">
+            Download Details
+          </button>
+          <button class="add-button" onclick="downloadEquipmentQRCodes()">
+            Download QR Codes
+          </button>
+        </div>
+        <table style="width: 100%; margin-top: 20px; border-collapse: collapse">
+          <thead>
+            <tr>
+              <th>Serial Number</th>
+              <th>Status</th>
+              <th>QR Code</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="modalTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal" id="viewDetailsModal">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeViewDetailsModal()"
+          >&times;</span
+        >
+        <h3 style="text-align: center">Full Equipment Details</h3>
+        <div
+          id="viewDetailsContent"
+          style="font-size: 16px; line-height: 1.6"
+        ></div>
+      </div>
+    </div>
+
+    <div id="confirmationModal" class="modal">
+      <div class="modal-content">
+        <p id="confirmationMessage">Are you sure?</p>
+        <div
+          style="
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+          "
+        >
+          <button
+            id="confirmYes"
+            style="
+              background-color: #1a73e8;
+              color: white;
+              padding: 10px 20px;
+              border: none;
+              border-radius: 5px;
+            "
+          >
+            Yes
+          </button>
+          <button
+            id="confirmNo"
+            style="
+              background-color: #d32f2f;
+              color: white;
+              padding: 10px 20px;
+              border: none;
+              border-radius: 5px;
+            "
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="successModal" class="modal">
+      <div class="modal-content">
+        <p id="successMessage">Action completed successfully!</p>
+        <button
+          onclick="closeSuccessModal()"
+          style="
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+          "
+        >
+          OK
+        </button>
+      </div>
+    </div>
+
+    <div class="keyboard-container" id="searchKeyboard" style="display: none;"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script>
+      function navigateTo(page) {
+        window.location.href = page;
+      }
+
+      window.onload = function () {
+        document.getElementById("equipment").classList.add("active");
+        loadEquipment();
+      };
+
+      function openModal() {
+        document.getElementById("addEquipmentModal").style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("addEquipmentModal").style.display = "none";
+      }
+
+      function generateSerialNumber(equipmentName) {
+        const prefix = equipmentName.trim().substring(0, 3).toUpperCase();
+        const random = Math.floor(1000 + Math.random() * 9000);
+        return `${prefix}-${random}`;
+      }
+
+      function addEquipment() {
+        const equipmentName = document.getElementById("equipmentName").value.trim();
+        const brand = document.getElementById("brand").value.trim();
+        const yearPurchased = document.getElementById("yearPurchased").value.trim();
+        const propertyNumber = document.getElementById("propertyNumber").value.trim();
+        const modelNumber = document.getElementById("modelNumber").value.trim();
+        const acquisitionDate = document.getElementById("acquisitionDate").value.trim();
+        const acquisitionCost = document.getElementById("acquisitionCost").value.trim();
+        const personAccountable = document.getElementById("personAccountable").value.trim();
+        const location = document.getElementById("location").value.trim();
+
+        if (
+          !equipmentName ||
+          !brand ||
+          !yearPurchased ||
+          !propertyNumber ||
+          !modelNumber ||
+          !acquisitionDate ||
+          !acquisitionCost ||
+          !personAccountable ||
+          !location
+        ) {
+          showSuccess("⚠️ Please fill in all required fields.");
+          return;
+        }
+
+        const serialNumber = generateSerialNumber(equipmentName);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "add_equipment.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            showSuccess("✅ Equipment added successfully!");
+            closeModal();
+            loadEquipment();
+          } else {
+            showSuccess("❌ Error adding equipment.");
+          }
+        };
+        xhr.send(
+          "serialNumber=" +
+            encodeURIComponent(serialNumber) +
+            "&equipmentName=" +
+            encodeURIComponent(equipmentName) +
+            "&brand=" +
+            encodeURIComponent(brand) +
+            "&yearPurchased=" +
+            encodeURIComponent(yearPurchased) +
+            "&propertyNumber=" +
+            encodeURIComponent(propertyNumber) +
+            "&modelNumber=" +
+            encodeURIComponent(modelNumber) +
+            "&acquisitionDate=" +
+            encodeURIComponent(acquisitionDate) +
+            "&acquisitionCost=" +
+            encodeURIComponent(acquisitionCost) +
+            "&personAccountable=" +
+            encodeURIComponent(personAccountable) +
+            "&location=" +
+            encodeURIComponent(location)
+        );
+      }
+
+      let allEquipmentData = [];
+
+      function loadEquipment() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "fetch_equipment.php", true);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            allEquipmentData = JSON.parse(xhr.responseText);
+            const tableBody = document.getElementById("equipmentTableBody");
+            tableBody.innerHTML = "";
+
+            const equipmentStats = {};
+
+            allEquipmentData.forEach((item) => {
+              const name = item.equipmentName;
+              if (!equipmentStats[name]) {
+                equipmentStats[name] = {
+                  total: 0,
+                  available: 0,
+                  borrowed: 0,
+                };
+              }
+
+              equipmentStats[name].total++;
+              if (item.status === "available") {
+                equipmentStats[name].available++;
+              }
+            });
+
+            for (const name in equipmentStats) {
+              equipmentStats[name].borrowed =
+                equipmentStats[name].total - equipmentStats[name].available;
+            }
+
+            const sortedNames = Object.keys(equipmentStats).sort((a, b) =>
+              a.localeCompare(b)
+            );
+
+            sortedNames.forEach((name) => {
+              const stats = equipmentStats[name];
+              const row = document.createElement("tr");
+              row.style.cursor = "pointer";
+              row.onclick = function () {
+                showDetailsModal(name);
+              };
+              row.innerHTML = `
+              <td>${name}</td>
+              <td>${stats.total}</td>
+              <td>${stats.available}</td>
+              <td>${stats.borrowed}</td>
+            `;
+              tableBody.appendChild(row);
+            });
+          }
+        };
+        xhr.send();
+      }
+
+      function searchEquipment() {
+        const query = document.getElementById("searchBar").value.toLowerCase();
+        const rows = document.querySelectorAll("#equipmentTableBody tr");
+
+        rows.forEach((row) => {
+          const equipmentName = row.cells[0].textContent.toLowerCase();
+          if (equipmentName.includes(query)) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      }
+
+      function showDetailsModal(equipmentName) {
+        const modalTitle = document.getElementById("modalTitle");
+        const modalBody = document.getElementById("modalTableBody");
+        modalTitle.textContent = `Details for: ${equipmentName}`;
+        modalBody.innerHTML = "";
+
+        const filtered = allEquipmentData.filter(
+          (item) => item.equipmentName === equipmentName
+        );
+
+        filtered.forEach((item) => {
+          const row = document.createElement("tr");
+
+          const qrTd = document.createElement("td");
+
+          const qrDiv = document.createElement("div");
+          qrDiv.style.display = "none";
+          qrDiv.id = "qr-" + item.serialNumber;
+          document.body.appendChild(qrDiv);
+
+          new QRCode(qrDiv, {
+            text: item.serialNumber,
+            width: 256,
+            height: 256,
+          });
+
+          setTimeout(() => {
+            const qrCanvas = qrDiv.querySelector("canvas");
+
+            const qrSize = qrCanvas.width;
+            const textHeight = 30;
+            const finalCanvas = document.createElement("canvas");
+
+            finalCanvas.width = qrSize;
+            finalCanvas.height = qrSize + textHeight;
+
+            const ctx = finalCanvas.getContext("2d");
+
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
+            ctx.drawImage(qrCanvas, 0, 0);
+
+            ctx.fillStyle = "#000";
+            ctx.font = "16px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText(item.serialNumber, qrSize / 2, qrSize + 20);
+
+            qrDiv.innerHTML = "";
+            qrDiv.appendChild(finalCanvas);
+
+            const downloadBtn = document.createElement("button");
+            downloadBtn.className = "action-btn";
+            downloadBtn.innerText = "Download QR";
+            downloadBtn.style.width = "auto";
+            downloadBtn.style.marginLeft = "20%";
+            downloadBtn.style.padding = "4px 6px";
+            downloadBtn.style.fontSize = "20px";
+            downloadBtn.style.whiteSpace = "nowrap";
+
+            downloadBtn.onclick = function () {
+              const link = document.createElement("a");
+              link.href = finalCanvas.toDataURL("image/png");
+              link.download = `${item.serialNumber}.png`;
+              link.click();
+            };
+
+            qrTd.appendChild(downloadBtn);
+          }, 300);
+
+          row.innerHTML = `
+          <td>${item.serialNumber}</td>
+          <td>
+            <span class="status-box ${
+              item.status === "available"
+                ? "status-available"
+                : item.status === "borrowed"
+                ? "status-borrowed"
+                : "status-condemn"
+            }">
+              ${item.status}
+            </span>
+          </td>
+        `;
+          row.appendChild(qrTd);
+
+          const actionTd = document.createElement("td");
+          actionTd.innerHTML = `
+          <button class="action-btn" onclick='viewDetails(${JSON.stringify(
+            item
+          )})'>Details</button>
+          <button class="delete-btn" onclick="deleteEquipment('${
+            item.serialNumber
+          }')">Delete</button>
+        `;
+          row.appendChild(actionTd);
+
+          modalBody.appendChild(row);
+        });
+
+        document.getElementById("equipmentDetailsModal").style.display =
+          "block";
+      }
+
+      function closeDetailsModal() {
+        document.getElementById("equipmentDetailsModal").style.display = "none";
+      }
+
+      function editEquipment() {
+        alert("Edit function coming soon!");
+      }
+
+      function deleteEquipment(serialNumber) {
+        showConfirmation(
+          `Are you sure you want to delete serial number ${serialNumber}?`,
+          function (confirmed) {
+            if (!confirmed) return;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "delete_equipment.php", true);
+            xhr.setRequestHeader(
+              "Content-Type",
+              "application/x-www-form-urlencoded"
+            );
+            xhr.onload = function () {
+              if (xhr.status === 200 && xhr.responseText.includes("Deleted")) {
+                showSuccess("✅ Equipment deleted successfully!");
+                loadEquipment();
+                closeDetailsModal();
+              } else {
+                showSuccess("❌ Error deleting equipment: " + xhr.responseText);
+              }
+            };
+            xhr.send("serialNumber=" + encodeURIComponent(serialNumber));
+          }
+        );
+      }
+
+      function viewDetails(item) {
+        const detailsHTML = `
+          <div id="detailsDisplay" class="modal-form">
+            <div class="form-column">
+              <p><strong>Equipment Name:</strong> <span>${item.equipmentName}</span></p>
+              <p><strong>Serial Number:</strong> <span>${item.serialNumber}</span></p>
+              <p><strong>Status:</strong> <span>${item.status}</span></p>
+              <p><strong>Brand:</strong> <span>${item.brand}</span></p>
+              <p><strong>Year Purchased:</strong> <span>${item.yearPurchased}</span></p>
+            </div>
+            <div class="form-column">
+              <p><strong>Property Number:</strong> <span>${item.propertyNumber}</span></p>
+              <p><strong>Model Number:</strong> <span>${item.modelNumber}</span></p>
+              <p><strong>Acquisition Date:</strong> <span>${item.acquisitionDate}</span></p>
+              <p><strong>Acquisition Cost:</strong> <span>${item.acquisitionCost}</span></p>
+              <p><strong>Person Accountable:</strong> <span>${item.personAccountable}</span></p>
+            </div>
+            <div style="width: 100%; text-align: center; margin-top: -60px;">
+              <p><strong>Location:</strong> <span style="font-weight: bold;">${item.location}</span></p>
+            </div>
+            <div style="width: 100%; display: flex; justify-content: center;">
+              <button class="action-btn" onclick='enableEdit(${JSON.stringify(item)})'>Edit</button>
+            </div>
+          </div>
+
+          <div id="editContainer" style="display: none; flex-direction: column; align-items: center; margin-top: 20px;">
+            <form id="editForm" class="modal-form" style="width: 100%;">
+              <div class="form-column">
+                <label>Equipment Name:</label>
+                <input type="text" name="equipmentName" value="${item.equipmentName}" required />
+
+                <label>Year Purchased:</label>
+                <input type="text" name="yearPurchased" value="${item.yearPurchased}" required maxlength="4" inputmode="numeric" />
+
+                <label>Model Number:</label>
+                <input type="text" name="modelNumber" value="${item.modelNumber}" required />
+
+                <label>Acquisition Cost:</label>
+                <input type="text" name="acquisitionCost" value="${item.acquisitionCost}" required inputmode="numeric" />
+
+                <label>Location:</label>
+                <input type="text" name="location" value="${item.location}" required />
+              </div>
+              <div class="form-column">
+                <label>Brand:</label>
+                <input type="text" name="brand" value="${item.brand}" required />
+
+                <label>Property Number:</label>
+                <input type="text" name="propertyNumber" value="${item.propertyNumber}" required />
+
+                <label>Acquisition Date:</label>
+                <input type="date" name="acquisitionDate" value="${item.acquisitionDate}" required />
+
+                <label>Person Accountable:</label>
+                <input type="text" name="personAccountable" value="${item.personAccountable}" required />
+
+                <label>Status:</label>
+                <select name="status" required>
+                  <option value="available" ${item.status === "available" ? "selected" : ""}>Available</option>
+                  <option value="borrowed" ${item.status === "borrowed" ? "selected" : ""}>Borrowed</option>
+                  <option value="condemn" ${item.status === "condemn" ? "selected" : ""}>Condemn</option>
+                </select>
+              </div>
+            </form>
+
+            <div style="margin-top: 20px; text-align: center;">
+              <button onclick="submitEditForm()" class="add-button" style="padding: 15px 200px; font-size: 18px;">Save Changes</button>
+            </div>
+
+            <div class="keyboard-container" style="margin-top: 20px; margin-left: 0px;">
+              <div id="editKeyboard">
+                <div class="keyboard-row">
+                  ${[..."1234567890"].map(n => `<button onclick="insertKey('${n}')">${n}</button>`).join("")}
+                </div>
+                <div class="keyboard-row">
+                  ${[..."qwertyuiop"].map(c => `<button data-char="${c}" onclick="insertKey('${c}')" data-key-type="letter">${c}</button>`).join("")}
+                </div>
+                <div class="keyboard-row">
+                  ${[..."asdfghjkl"].map(c => `<button data-char="${c}" onclick="insertKey('${c}')" data-key-type="letter">${c}</button>`).join("")}
+                </div>
+                <div class="keyboard-row">
+                  ${[..."zxcvbnm"].map(c => `<button data-char="${c}" onclick="insertKey('${c}')" data-key-type="letter">${c}</button>`).join("")}
+                </div>
+                <div class="keyboard-row">
+                  <button onclick="toggleShift()" id="shiftKey">Shift</button>
+                  <button onclick="insertKey(' ')">Space</button>
+                  <button onclick="deleteKey()">⌫</button>
+                  <button onclick="clearInput()">Clear</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById("viewDetailsContent").innerHTML = detailsHTML;
+        document.getElementById("viewDetailsModal").style.display = "block";
+
+        // Attach focus listeners to new input fields
+        setTimeout(() => {
+          document.querySelectorAll('#viewDetailsModal input, #viewDetailsModal select').forEach(input => {
+            input.addEventListener('focus', () => {
+              focusedInput = input;
+            });
+          });
+          updateKeyLabels();
+        }, 100);
+      }
+
+      function enableEdit(item) {
+        document.getElementById("detailsDisplay").style.display = "none";
+        document.getElementById("editContainer").style.display = "flex";
+      }
+
+      function closeViewDetailsModal() {
+        document.getElementById("viewDetailsModal").style.display = "none";
+      }
+
+      function submitEditForm() {
+        const form = document.getElementById("editForm");
+        const formData = new FormData(form);
+        const data = {};
+
+        formData.forEach((value, key) => {
+          data[key] = value;
+        });
+
+        // Add serial number from the original item
+        const serialNumber = [...document.querySelectorAll("#detailsDisplay p")]
+          .find(p => p.textContent.includes("Serial Number:"))
+          ?.querySelector("span")?.textContent?.trim();
+
+        if (!serialNumber) {
+          showSuccess("❌ Serial number not found. Cannot update.");
+          return;
+        }
+
+        data.serialNumber = serialNumber;
+
+        // 🔒 Show confirmation BEFORE sending update
+        showConfirmation(`Are you sure you want to save changes for "${data.equipmentName}"?`, function (confirmed) {
+          if (!confirmed) return;
+
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", "update_equipment.php", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onload = function () {
+            if (xhr.status === 200 && xhr.responseText.includes("Updated")) {
+              showSuccess("✅ Equipment updated successfully!");
+              document.getElementById("viewDetailsModal").style.display = "none";
+              loadEquipment();
+            } else {
+              showSuccess("❌ Error updating equipment: " + xhr.responseText);
+            }
+          };
+          xhr.send(JSON.stringify(data));
+        });
+      }
+
+      function downloadAllQRCodes() {
+        if (allEquipmentData.length === 0) {
+          showSuccess("⚠️ No equipment data available.");
+          return;
+        }
+
+        const zip = new JSZip();
+        const qrFolder = zip.folder("qrcodes");
+        let completed = 0;
+
+        allEquipmentData.forEach((item, index) => {
+          const tempDiv = document.createElement("div");
+          tempDiv.style.display = "none";
+          document.body.appendChild(tempDiv);
+
+          const qrCode = new QRCode(tempDiv, {
+            text: item.serialNumber,
+            width: 256,
+            height: 256,
+          });
+
+          setTimeout(() => {
+            const qrCanvas = tempDiv.querySelector("canvas");
+            if (qrCanvas) {
+              const qrSize = qrCanvas.width;
+              const textHeight = 30;
+              const finalCanvas = document.createElement("canvas");
+
+              finalCanvas.width = qrSize;
+              finalCanvas.height = qrSize + textHeight;
+
+              const ctx = finalCanvas.getContext("2d");
+
+              ctx.fillStyle = "#fff";
+              ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
+              ctx.drawImage(qrCanvas, 0, 0);
+
+              ctx.fillStyle = "#000";
+              ctx.font = "16px sans-serif";
+              ctx.textAlign = "center";
+              ctx.fillText(item.serialNumber, qrSize / 2, qrSize + 20);
+
+              finalCanvas.toBlob(function (blob) {
+                qrFolder.file(`${item.serialNumber}.png`, blob);
+                completed++;
+
+                document.body.removeChild(tempDiv);
+
+                if (completed === allEquipmentData.length) {
+                  zip.generateAsync({ type: "blob" }).then(function (content) {
+                    saveAs(content, "Equipment_QR_Codes.zip");
+                  });
+                }
+              });
+            }
+          }, 300);
+        });
+      }
+
+      function downloadEquipmentDetails() {
+        const equipmentName = document
+          .getElementById("modalTitle")
+          .textContent.replace("Details for: ", "")
+          .trim();
+        window.location.href =
+          "export_equipment_details.php?equipmentName=" +
+          encodeURIComponent(equipmentName);
+      }
+
+      function downloadEquipmentQRCodes() {
+        const equipmentName = document
+          .getElementById("modalTitle")
+          .textContent.replace("Details for: ", "")
+          .trim();
+        const filteredItems = allEquipmentData.filter(
+          (item) => item.equipmentName === equipmentName
+        );
+
+        if (filteredItems.length === 0) {
+          showSuccess("⚠️ No equipment found.");
+          return;
+        }
+
+        const zip = new JSZip();
+        const qrFolder = zip.folder("qrcodes");
+        let completed = 0;
+
+        filteredItems.forEach((item) => {
+          const tempDiv = document.createElement("div");
+          tempDiv.style.display = "none";
+          document.body.appendChild(tempDiv);
+
+          new QRCode(tempDiv, {
+            text: item.serialNumber,
+            width: 256,
+            height: 256,
+          });
+          setTimeout(() => {
+            const qrCanvas = tempDiv.querySelector("canvas");
+            if (qrCanvas) {
+              const qrSize = qrCanvas.width;
+              const textHeight = 30;
+              const finalCanvas = document.createElement("canvas");
+
+              finalCanvas.width = qrSize;
+              finalCanvas.height = qrSize + textHeight;
+
+              const ctx = finalCanvas.getContext("2d");
+
+              ctx.fillStyle = "#fff";
+              ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
+              ctx.drawImage(qrCanvas, 0, 0);
+
+              ctx.fillStyle = "#000";
+              ctx.font = "16px sans-serif";
+              ctx.textAlign = "center";
+              ctx.fillText(item.serialNumber, qrSize / 2, qrSize + 20);
+
+              finalCanvas.toBlob((blob) => {
+                qrFolder.file(`${item.serialNumber}.png`, blob);
+                completed++;
+                document.body.removeChild(tempDiv);
+
+                if (completed === filteredItems.length) {
+                  zip.generateAsync({ type: "blob" }).then((content) => {
+                    saveAs(
+                      content,
+                      `${equipmentName.replace(/\s+/g, "_")}_QRCodes.zip`
+                    );
+                  });
+                }
+              });
+            } else {
+              document.body.removeChild(tempDiv);
+              completed++;
+            }
+          }, 300);
+        });
+      }
+
+      function confirmLogout() {
+        showConfirmation(
+          "Are you sure you want to log out?",
+          function (confirmed) {
+            if (confirmed) {
+              navigateTo("login.html");
+            }
+          }
+        );
+      }
+
+      const uppercaseFields = [
+        "equipmentName",
+        "brand",
+        "propertyNumber",
+        "modelNumber",
+        "personAccountable",
+        "location",
+      ];
+
+      uppercaseFields.forEach((id) => {
+        const input = document.getElementById(id);
+        input.addEventListener("input", function () {
+          this.value = this.value.toUpperCase();
+        });
+      });
+
+      function showConfirmation(message, callback) {
+        const modal = document.getElementById("confirmationModal");
+        const messageBox = document.getElementById("confirmationMessage");
+        const yesBtn = document.getElementById("confirmYes");
+        const noBtn = document.getElementById("confirmNo");
+
+        messageBox.textContent = message;
+        modal.style.display = "flex";
+
+        const cleanup = () => {
+          modal.style.display = "none";
+          yesBtn.onclick = null;
+          noBtn.onclick = null;
+        };
+
+        yesBtn.onclick = () => {
+          cleanup();
+          callback(true);
+        };
+
+        noBtn.onclick = () => {
+          cleanup();
+          callback(false);
+        };
+      }
+
+      function showSuccess(message) {
+        document.getElementById("successMessage").textContent = message;
+        document.getElementById("successModal").style.display = "flex";
+      }
+
+      function closeSuccessModal() {
+        document.getElementById("successModal").style.display = "none";
+      }
+
+      let focusedInput = null;
+
+      // Attach focus listener to all form fields
+      document.querySelectorAll('#addEquipmentModal input').forEach(input => {
+        input.addEventListener('focus', () => {
+          focusedInput = input;
+        });
+      });
+
+      let isShift = false;
+
+      function insertKey(char) {
+        if (!focusedInput) return;
+        const insertChar = isShift && /^[a-zA-Z]$/.test(char) ? char.toUpperCase() : char;
+        const start = focusedInput.selectionStart;
+        const end = focusedInput.selectionEnd;
+        const value = focusedInput.value;
+        focusedInput.value = value.substring(0, start) + insertChar + value.substring(end);
+        focusedInput.selectionStart = focusedInput.selectionEnd = start + insertChar.length;
+        focusedInput.focus();
+      }
+
+      function toggleShift() {
+        isShift = !isShift;
+        updateKeyLabels();
+        const shiftKey = document.getElementById("shiftKey");
+        shiftKey.style.backgroundColor = isShift ? "#1a73e8" : "#555";
+        shiftKey.style.color = "#fff";
+      }
+
+      function updateKeyLabels() {
+        document.querySelectorAll('#equipmentKeyboard button[data-key-type="letter"]').forEach(btn => {
+          const base = btn.getAttribute("data-char");
+          btn.textContent = isShift ? base.toUpperCase() : base.toLowerCase();
+        });
+      }
+
+      function deleteKey() {
+        if (!focusedInput) return;
+        const start = focusedInput.selectionStart;
+        const end = focusedInput.selectionEnd;
+        const value = focusedInput.value;
+        if (start > 0) {
+          focusedInput.value = value.substring(0, start - 1) + value.substring(end);
+          focusedInput.selectionStart = focusedInput.selectionEnd = start - 1;
+        }
+        focusedInput.focus();
+      }
+
+      function clearInput() {
+        if (!focusedInput) return;
+        focusedInput.value = "";
+        focusedInput.focus();
+      }
+
+      // Initialize lowercase labels on load
+      document.addEventListener("DOMContentLoaded", () => {
+        updateKeyLabels();
+      });
+
+      function confirmAddEquipment() {
+        const requiredFields = [
+          "equipmentName",
+          "brand",
+          "yearPurchased",
+          "propertyNumber",
+          "modelNumber",
+          "acquisitionDate",
+          "acquisitionCost",
+          "personAccountable",
+          "location"
+        ];
+
+        let missingFields = [];
+
+        requiredFields.forEach((id) => {
+          const field = document.getElementById(id);
+          if (!field.value.trim()) {
+            missingFields.push(id.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()));
+          }
+        });
+
+        if (missingFields.length > 0) {
+          showSuccess(`⚠️ All Fields Are Required')}`);
+          return;
+        }
+
+        const equipmentName = document.getElementById("equipmentName").value.trim();
+        showConfirmation(`Are you sure you want to add "${equipmentName}"?`, function (confirmed) {
+          if (confirmed) {
+            addEquipment();
+          }
+        });
+      }
+
+      function toggleSearchKeyboard() {
+        const keyboard = document.getElementById("searchKeyboard");
+        const searchBar = document.getElementById("searchBar");
+
+        if (keyboard.style.display === "none") {
+          createSearchKeyboard(); // Generate if hidden
+          keyboard.style.display = "block";
+        } else {
+          keyboard.style.display = "none";
+        }
+
+        focusedInput = searchBar;
+      }
+
+      function createSearchKeyboard() {
+        const container = document.getElementById("searchKeyboard");
+        container.innerHTML = ""; // Clear previous keyboard
+
+        const layout = [
+          "1234567890",
+          "qwertyuiop",
+          "asdfghjkl",
+          "zxcvbnm"
+        ];
+
+        layout.forEach(row => {
+          const rowDiv = document.createElement("div");
+          rowDiv.className = "keyboard-row";
+
+          row.split("").forEach(char => {
+            const btn = document.createElement("button");
+            btn.textContent = isShift ? char.toUpperCase() : char;
+            btn.setAttribute("data-char", char);
+            btn.setAttribute("data-key-type", "letter");
+            btn.onclick = () => {
+              focusedInput = document.getElementById("searchBar"); // Set the input focus
+              insertKey(char);
+              searchEquipment(); // Trigger search immediately after keypress
+            };
+            rowDiv.appendChild(btn);
+          });
+
+          container.appendChild(rowDiv);
+        });
+
+        // Control row
+        const controlRow = document.createElement("div");
+        controlRow.className = "keyboard-row";
+
+        controlRow.innerHTML = `
+          <button onclick="toggleShift()" id="searchShiftKey">Shift</button>
+          <button onclick="insertKey(' ')">Space</button>
+          <button onclick="deleteKey(); searchEquipment();">⌫</button>
+          <button onclick="clearInput(); searchEquipment();">Clear</button>
+        `;
+
+        container.appendChild(controlRow);
+
+        // Force update of labels based on shift state
+        updateKeyLabels();
+      }
+    </script>
+  </body>
+</html>

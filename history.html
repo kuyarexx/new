@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+  <style>
+    html {
+      font-size: 18px;
+    }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1rem;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #EEF1FF, #D2DAFF);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .top-bar {
+      background: #B1B2FF;
+      padding: 20px 30px;
+      width: 100%;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .logo-container h2 {
+      color: #000;
+      font-size: 22px;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .nav-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      background: #FFFFFF;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+      padding: 16px 0;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-menu li {
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #5f6368;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 20px 20px 0 0;
+      transition: background 0.3s ease, color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-menu li i {
+      font-size: 18px;
+    }
+
+    .nav-menu li:hover {
+      background: #F1F3F4;
+    }
+
+    .nav-menu li.active {
+      color: #1A73E8;
+      font-weight: bold;
+      background: #FFFFFF;
+      box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .content-wrapper {
+      margin-top: 170px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .content {
+      padding: 30px;
+      text-align: center;
+      color: #333;
+      font-size: 20px;
+      width: 100%;
+      max-width: 1700px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    th, td {
+      padding: 16px;
+      font-size: 1.05rem;
+      text-align: center;
+      border-bottom: 1px solid #E0E0E0;
+    }
+    th {
+      background: #F8F9FA;
+      color: black;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      border-bottom: 2px solid #B1B2FF;
+    }
+    tr:nth-child(even) {
+      background: #F8F9FA;
+    }
+    tr:hover {
+      background: #E0E0E0;
+      transition: 0.3s ease-in-out;
+    }
+    .status-borrowed {
+      background-color: orange;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+    .status-returned {
+      background-color: green;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+    .status-overdue {
+      background-color: red;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+    .table-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .table-title {
+      text-align: center;
+      font-size: 30px;
+      font-weight: bold;
+      flex-grow: 1;
+    }
+    #clearHistoryBtn {
+      position: absolute;
+      right: 0;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 20px 40px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s;
+      margin-top: -50px;
+      margin-right: -320px;
+    }
+    #clearHistoryBtn:hover {
+      background-color: #cc0000;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: white;
+      padding: 30px;
+      width: 400px;
+      max-width: 90%;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+    }
+    .modal-content h3 {
+      margin-top: 0;
+      font-size: 26px;
+      font-weight: bold;
+      color: #333;
+    }
+    .modal-content p {
+      font-size: 20px;
+      margin: 20px 0;
+      color: #444;
+      line-height: 1.6;
+    }
+    .modal-content button {
+      padding: 12px 18px;
+      border: none;
+      background: #1a73e8;
+      color: white;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+      width: 100%;
+      max-width: 200px;
+    }
+    .modal-content button:hover {
+      background: #1558c3;
+    }
+    .row-overdue {
+      background-color: rgba(255, 0, 0, 0.2) !important;
+    }
+    .row-borrowed {
+      background-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    .logout-btn:hover {
+      color: red;
+    }
+
+    #statusFilter,
+    #equipmentFilter,
+    #searchBar {
+      padding: 12px 16px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .search-keyboard-floating {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 8px;
+      z-index: 2000;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      padding: 16px;
+      display: inline-block;
+    }
+
+    .keyboard-row {
+      display: flex;
+      justify-content: center;
+      margin: 4px 0;
+    }
+
+    .kb-btn {
+      padding: 10px 14px;
+      margin: 2px;
+      font-size: 16px;
+      background-color: #B1B2FF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      min-width: 40px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .kb-btn:hover {
+      background-color: #8f91ff;
+    }
+
+    .kb-space {
+      width: 240px;
+    }
+
+    .kb-wide {
+      min-width: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-container">
+      <img src="logo.png" alt="Logo"> 
+      <h2>Computer Engineering</h2>
+    </div>
+  </div>
+
+  <div class="nav-container">
+    <ul class="nav-menu">
+      <li id="home" onclick="navigateTo('dashboard.html')"><i class="fas fa-home"></i> Home</li>
+      <li id="equipment" onclick="navigateTo('equipment.html')"><i class="fas fa-tools"></i> Equipment</li>
+      <li id="history" onclick="navigateTo('history.html')"><i class="fas fa-history"></i> History</li>
+      <li id="user" onclick="navigateTo('user_info.html')"><i class="fas fa-user"></i> User</li>
+      <li id="about" onclick="navigateTo('about.html')"><i class="fas fa-info-circle"></i> About Us</li>
+      <li id="logout" onclick="confirmLogout()" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Log Out
+      </li>    
+    </ul>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="content">
+      <h2 class="table-title" style="margin-bottom: 20px; font-size: 70px; margin-top: -10px;">BORROW & RETURN HISTORY</h2>
+    
+      <div class="table-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; width: 100%;">
+        <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+          <div> 
+            <label for="statusFilter" style="font-weight: bold;">Status:</label><br>
+            <select id="statusFilter" onchange="applyFilters()" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
+              <option value="All">All</option>
+              <option value="Borrowed">Borrowed</option>
+              <option value="Returned">Returned</option>
+              <option value="Overdue">Overdue</option>
+            </select>
+          </div>
+          <div>
+            <label for="equipmentFilter" style="font-weight: bold;">Equipment:</label><br>
+            <select id="equipmentFilter" onchange="applyFilters()" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
+              <option value="All">All</option>
+            </select>
+          </div>
+        </div>
+    
+        <div style="margin-top: 10px; width: 100%; display: flex; flex-wrap: wrap; gap: 10px;">
+          <div style="position: relative; width: 100%; max-width: 300px;">
+            <div style="position: relative; width: 100%; max-width: 300px;" class="search-wrapper">
+              <i class="fas fa-search" style="position: absolute; top: 50%; left: 16px; transform: translateY(-50%); font-size: 18px; color: #888;"></i>
+              <input
+                type="text"
+                id="searchBar"
+                onkeyup="applyFilters()"
+                placeholder="Search by User ID, Name..."
+                style="width: 100%; padding: 14px 44px 14px 44px; font-size: 18px; border-radius: 30px; border: 1px solid #ccc;"
+              />
+              <button onclick="toggleSearchKeyboard()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
+                <i class="fas fa-keyboard" style="font-size: 20px; color: #1a73e8;"></i>
+              </button>
+
+              <!-- Keyboard will appear here -->
+              <div id="searchKeyboard" class="search-keyboard-floating" style="display: none;"></div>
+            </div>
+            <div id="searchKeyboard" class="search-keyboard-floating" style="display: none;"></div>
+          </div>
+        </div>
+
+        <div style="flex-grow: 1;"></div>
+        <div style="display: flex; justify-content: flex-end;">
+          <button id="clearHistoryBtn" onclick="clearReturnedHistory()">Clear History</button>
+        </div>
+      </div>
+    
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align: left;">User ID</th>
+            <th style="text-align: left;">Full Name</th>
+            <th style="text-align: left;">Year</th>
+            <th>Borrowed</th>
+            <th>Returned</th>
+            <th>Overdue</th>
+          </tr>
+        </thead>
+        <tbody id="historyTableBody">
+        </tbody>
+      </table>
+    </div>    
+  </div>
+
+  <div id="confirmationModal" class="modal" style="display: none;">
+    <div style="display: flex; gap: 30px; align-items: flex-start; background: none;">
+      
+      <div class="modal-content" style="width: 400px;">
+        <p id="confirmationMessage">Enter password to confirm:</p>
+        <input
+          type="password"
+          id="confirmationPassword"
+          placeholder="Enter password"
+          style="width: 100%; padding: 10px; font-size: 16px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px;"
+        />
+        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;">
+          <button id="confirmYes" style="background-color: #1A73E8; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Confirm</button>
+          <button id="confirmNo" style="background-color: #D32F2F; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Cancel</button>
+        </div>
+      </div>
+
+      <div id="keyboard" style="display: block;">
+        <div style="background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 0 12px rgba(0,0,0,0.2); display: inline-block;">
+          <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+            <button onclick="addKey('1')" class="kb-btn">1</button>
+            <button onclick="addKey('2')" class="kb-btn">2</button>
+            <button onclick="addKey('3')" class="kb-btn">3</button>
+            <button onclick="addKey('4')" class="kb-btn">4</button>
+            <button onclick="addKey('5')" class="kb-btn">5</button>
+            <button onclick="addKey('6')" class="kb-btn">6</button>
+            <button onclick="addKey('7')" class="kb-btn">7</button>
+            <button onclick="addKey('8')" class="kb-btn">8</button>
+            <button onclick="addKey('9')" class="kb-btn">9</button>
+            <button onclick="addKey('0')" class="kb-btn">0</button>
+          </div>
+          <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+            <button onclick="addKey('Q')" class="kb-btn">Q</button>
+            <button onclick="addKey('W')" class="kb-btn">W</button>
+            <button onclick="addKey('E')" class="kb-btn">E</button>
+            <button onclick="addKey('R')" class="kb-btn">R</button>
+            <button onclick="addKey('T')" class="kb-btn">T</button>
+            <button onclick="addKey('Y')" class="kb-btn">Y</button>
+            <button onclick="addKey('U')" class="kb-btn">U</button>
+            <button onclick="addKey('I')" class="kb-btn">I</button>
+            <button onclick="addKey('O')" class="kb-btn">O</button>
+            <button onclick="addKey('P')" class="kb-btn">P</button>
+          </div>
+          <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+            <button onclick="addKey('A')" class="kb-btn">A</button>
+            <button onclick="addKey('S')" class="kb-btn">S</button>
+            <button onclick="addKey('D')" class="kb-btn">D</button>
+            <button onclick="addKey('F')" class="kb-btn">F</button>
+            <button onclick="addKey('G')" class="kb-btn">G</button>
+            <button onclick="addKey('H')" class="kb-btn">H</button>
+            <button onclick="addKey('J')" class="kb-btn">J</button>
+            <button onclick="addKey('K')" class="kb-btn">K</button>
+            <button onclick="addKey('L')" class="kb-btn">L</button>
+            <button onclick="clearPassword()" class="kb-btn" style="background: #D32F2F; color: white;">Clear</button>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button onclick="addKey('Z')" class="kb-btn">Z</button>
+            <button onclick="addKey('X')" class="kb-btn">X</button>
+            <button onclick="addKey('C')" class="kb-btn">C</button>
+            <button onclick="addKey('V')" class="kb-btn">V</button>
+            <button onclick="addKey('B')" class="kb-btn">B</button>
+            <button onclick="addKey('N')" class="kb-btn">N</button>
+            <button onclick="addKey('M')" class="kb-btn">M</button>
+            <button onclick="moveCursorLeft()" class="kb-btn">←</button>
+            <button onclick="deleteKey()" class="kb-btn">⌫</button>
+            <button onclick="moveCursorRight()" class="kb-btn">→</button>
+          </div>
+          <div style="margin-top: 10px; display: flex; justify-content: center;">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="successModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <p id="successMessage">Action completed successfully!</p>
+      <button onclick="closeSuccessModal()" style="margin-top: 15px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">OK</button>
+    </div>
+  </div>
+
+  <div id="userRecordsModal" class="modal" style="display: none;">
+    <div class="modal-content" style="width: 90%; max-width: 1000px; max-height: 90vh; overflow-y: auto;">
+      <h3 id="userModalTitle">Borrow Records</h3>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+        <thead>
+          <tr>
+            <th>Equipment Name</th>
+            <th>Serial Number</th>
+            <th>Borrowed Date</th>
+            <th>Returned Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="userModalBody"></tbody>
+      </table>
+      <button onclick="closeUserRecordsModal()" style="margin-top: 20px; padding: 10px 20px; background-color: #D32F2F; color: white; border: none; border-radius: 5px;">Close</button>
+    </div>
+  </div>
+
+  <div id="successModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <p id="successMessage">Action completed successfully!</p>
+      <button onclick="closeSuccessModal()" style="margin-top: 15px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">OK</button>
+    </div>
+  </div>
+
+  <script>
+
+    let focusedInput = null;
+    let isShift = false;
+
+    function navigateTo(page) {
+      window.location.href = page;
+    }
+
+    function setActiveTab() {
+      document.getElementById("history").classList.add("active");
+    }
+
+    function closeOverdueModal() {
+      document.getElementById("overdueModal").style.display = "none";
+    }
+    
+    function checkOverdue(dateBorrowedStr) {
+      const borrowedDate = new Date(dateBorrowedStr);
+      const now = new Date();
+      const diffHours = (now - borrowedDate) / (1000 * 60 * 60);
+      
+      if (diffHours >= 24) {
+        return true;
+      }
+      return false;
+    }
+
+    let allHistoryRecords = [];
+
+    function fetchHistory() {
+      fetch("get_history.php")
+        .then(response => response.json())
+        .then(data => {
+          allHistoryRecords = data.records || [];
+          populateEquipmentDropdown(allHistoryRecords);
+          renderHistory(allHistoryRecords);
+        })
+        .catch(error => {
+          console.error("Error fetching history:", error);
+        });
+    }
+
+    function populateEquipmentDropdown(records) {
+      const equipmentSet = new Set();
+      records.forEach(record => equipmentSet.add(record.equipment_name));
+      const dropdown = document.getElementById("equipmentFilter");
+      dropdown.innerHTML = `<option value="All">All</option>`;
+      equipmentSet.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        dropdown.appendChild(option);
+      });
+    }
+
+    window.onload = function() {
+      setActiveTab();
+      fetchHistory();
+    };
+
+    function renderHistory(records) {
+      const tableBody = document.getElementById("historyTableBody");
+      tableBody.innerHTML = "";
+
+      const uniqueUsers = new Set();
+
+      records.forEach(item => {
+        const key = `${item.user_fullname}-${item.user_id}`;
+        if (!uniqueUsers.has(key)) {
+          uniqueUsers.add(key);
+
+          const userRecords = records.filter(r => r.user_fullname === item.user_fullname);
+
+          let borrowed = 0, returned = 0, overdue = 0;
+          userRecords.forEach(r => {
+            if (r.status === "Borrowed") {
+              if (checkOverdue(r.date_borrowed)) {
+                overdue++;
+              } else {
+                borrowed++;
+              }
+            } else if (r.status === "Returned") {
+              returned++;
+            }
+          });
+
+          const row = document.createElement("tr");
+            row.innerHTML = `
+              <td style="text-align: left;">${item.user_id}</td>
+              <td style="cursor: pointer; color: #1A73E8; text-decoration: underline; text-align: left;">${item.user_fullname}</td>
+              <td class="user-year" data-user-id="${item.user_id}">Loading...</td>
+              <td>${borrowed}</td>
+              <td>${returned}</td>
+              <td>${overdue}</td>
+            `;
+          row.onclick = () => showUserBorrowRecords(item.user_fullname);
+          tableBody.appendChild(row);
+          fetchUserYear(item.user_id);
+        }
+      });
+    }
+
+    function showUserBorrowRecords(fullName) {
+      const userRecords = allHistoryRecords.filter(item => item.user_fullname === fullName);
+      const modalBody = document.getElementById("userModalBody");
+      modalBody.innerHTML = "";
+      document.getElementById("userModalTitle").textContent = `Borrow Records for ${fullName}`;
+
+      userRecords.forEach(item => {
+        const statusText = item.status === 'Borrowed' && checkOverdue(item.date_borrowed)
+          ? 'Overdue'
+          : item.status;
+        const statusClass = item.status === 'Borrowed' && checkOverdue(item.date_borrowed)
+          ? 'status-overdue'
+          : item.status === 'Returned'
+          ? 'status-returned'
+          : 'status-borrowed';
+
+        const row = `<tr>
+          <td>${item.equipment_name}</td>
+          <td>${item.equipment_serial}</td>
+          <td>${item.date_borrowed}</td>
+          <td>${item.date_returned || ''}</td>
+          <td><span class="${statusClass}">${statusText}</span></td>
+        </tr>`;
+        modalBody.innerHTML += row;
+      });
+
+      document.getElementById("userRecordsModal").style.display = "flex";
+    }
+
+    function closeUserRecordsModal() {
+      document.getElementById("userRecordsModal").style.display = "none";
+    }
+
+    function applyFilters() {
+      const statusFilter = document.getElementById("statusFilter").value;
+      const equipmentFilter = document.getElementById("equipmentFilter").value;
+      const searchQuery = document.getElementById("searchBar").value.toLowerCase();
+
+      const filtered = allHistoryRecords.filter(item => {
+        const isOverdue = item.status === "Borrowed" && checkOverdue(item.date_borrowed);
+        const statusMatch =
+          statusFilter === "All" ||
+          (statusFilter === "Overdue" && isOverdue) ||
+          (statusFilter === item.status && !isOverdue);
+
+        const equipmentMatch = equipmentFilter === "All" || item.equipment_name === equipmentFilter;
+
+        const searchMatch =
+          item.user_id.toLowerCase().includes(searchQuery) ||
+          item.user_fullname.toLowerCase().includes(searchQuery) ||
+          item.equipment_name.toLowerCase().includes(searchQuery) ||
+          item.equipment_serial.toLowerCase().includes(searchQuery);
+
+        return statusMatch && equipmentMatch && searchMatch;
+      });
+
+      renderHistory(filtered);
+    }
+
+    function clearReturnedHistory() {
+      showConfirmation("Enter your password to clear returned history:", function (enteredPassword) {
+        if (!enteredPassword) return;
+
+        fetch("clear_history.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: enteredPassword })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              showSuccess(data.message); 
+              fetchHistory();
+            } else {
+              showSuccess(data.message);
+            }
+          })
+          .catch(error => {
+            console.error("Error clearing history:", error);
+            showSuccess("Something went wrong. Please try again.");
+          });
+      });
+    }
+
+    function showConfirmation(message, callback) {
+      const modal = document.getElementById("confirmationModal");
+      const messageBox = document.getElementById("confirmationMessage");
+      const passwordInput = document.getElementById("confirmationPassword");
+      const yesBtn = document.getElementById("confirmYes");
+      const noBtn = document.getElementById("confirmNo");
+
+      focusedInput = passwordInput; // ✅ Set focusedInput here
+
+      messageBox.textContent = message;
+      passwordInput.value = "";
+      modal.style.display = "flex";
+
+      const cleanup = () => {
+        modal.style.display = "none";
+        yesBtn.onclick = null;
+        noBtn.onclick = null;
+      };
+
+      yesBtn.onclick = () => {
+        const enteredPassword = passwordInput.value;
+        cleanup();
+        callback(enteredPassword);
+      };
+
+      noBtn.onclick = () => {
+        cleanup();
+        callback(null);
+      };
+    }
+
+    function showSuccess(message) {
+      document.getElementById("successMessage").textContent = message;
+      document.getElementById("successModal").style.display = "flex";
+    }
+
+    function closeSuccessModal() {
+      document.getElementById("successModal").style.display = "none";
+    }
+
+    function showSuccess(message) {
+      document.getElementById("successMessage").textContent = message;
+      document.getElementById("successModal").style.display = "flex";
+    }
+
+    fetch(`get_user_year.php?id_number=123456`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log("Year level:", data.year);
+        } else {
+          console.error("Error:", data.message);
+        }
+      });
+
+    function fetchUserYear(userId) {
+      fetch(`get_user_year.php?id_number=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+          const yearCells = document.querySelectorAll(`.user-year[data-user-id="${userId}"]`);
+          yearCells.forEach(cell => {
+            cell.textContent = data.success ? data.year : 'N/A';
+          });
+        })
+        .catch(() => {
+          const yearCells = document.querySelectorAll(`.user-year[data-user-id="${userId}"]`);
+          yearCells.forEach(cell => {
+            cell.textContent = 'Error';
+          });
+        });
+    }
+
+
+    function addKey(char) {
+      const input = focusedInput;
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const text = input.value;
+      input.value = text.slice(0, start) + char + text.slice(end);
+      input.setSelectionRange(start + 1, start + 1);
+      input.focus();
+    }
+
+    function deleteKey() {
+      const input = focusedInput;
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const text = input.value;
+
+      if (start === end && start > 0) {
+        input.value = text.slice(0, start - 1) + text.slice(end);
+        input.setSelectionRange(start - 1, start - 1);
+      } else {
+        input.value = text.slice(0, start) + text.slice(end);
+        input.setSelectionRange(start, start);
+      }
+
+      input.focus();
+    }
+
+    function clearPassword() {
+      focusedInput.value = "";
+      focusedInput.focus();
+    }
+
+    function moveCursorLeft() {
+      const pos = focusedInput.selectionStart;
+      if (pos > 0) {
+        focusedInput.setSelectionRange(pos - 1, pos - 1);
+        focusedInput.focus();
+      }
+    }
+
+    function moveCursorRight() {
+      const pos = focusedInput.selectionStart;
+      if (pos < focusedInput.value.length) {
+        focusedInput.setSelectionRange(pos + 1, pos + 1);
+        focusedInput.focus();
+      }
+    }
+
+    function toggleSearchKeyboard() {
+      const keyboard = document.getElementById("searchKeyboard");
+      if (keyboard.style.display === "none") {
+        createSearchKeyboard();
+        keyboard.style.display = "block";
+      } else {
+        keyboard.style.display = "none";
+      }
+
+      focusedInput = document.getElementById("searchBar"); // ✅ Make sure it's set
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      focusedInput = document.getElementById("searchBar");
+    });
+
+    function toggleSearchKeyboard() {
+      const keyboard = document.getElementById("searchKeyboard");
+      if (keyboard.style.display === "none") {
+        createSearchKeyboard(); // Build keyboard
+        keyboard.style.display = "block";
+      } else {
+        keyboard.style.display = "none";
+      }
+
+      focusedInput = document.getElementById("searchBar");
+    }
+
+    function createSearchKeyboard() {
+      const container = document.getElementById("searchKeyboard");
+      container.innerHTML = "";
+
+      const rows = [
+        ["1","2","3","4","5","6","7","8","9","0"],
+        ["q","w","e","r","t","y","u","i","o","p"],
+        ["a","s","d","f","g","h","j","k","l"],
+        ["Shift","z","x","c","v","b","n","m","⌫"],
+        ["Space","Clear"]
+      ];
+
+      rows.forEach((row, i) => {
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "keyboard-row";
+
+        row.forEach(char => {
+          const btn = document.createElement("button");
+          btn.className = "kb-btn";
+
+          // Determine function or character
+          if (char === "Shift") {
+            btn.classList.add("kb-wide");
+            btn.textContent = "Shift";
+            btn.onclick = () => {
+              toggleShift();
+              updateKeyLabels();
+            };
+            btn.id = "searchShiftKey";
+          } else if (char === "Space") {
+            btn.classList.add("kb-btn", "kb-space");
+            btn.textContent = "Space";
+            btn.onclick = () => insertKey(" ");
+          } else if (char === "⌫") {
+            btn.classList.add("kb-wide");
+            btn.onclick = () => { deleteKey(); applyFilters(); };
+            btn.textContent = "⌫";
+          } else if (char === "Clear") {
+            btn.classList.add("kb-wide");
+            btn.onclick = () => { clearInput(); applyFilters(); };
+            btn.textContent = "Clear";
+          } else {
+            btn.textContent = isShift ? char.toUpperCase() : char;
+            btn.setAttribute("data-char", char);
+            btn.setAttribute("data-key-type", "letter");
+            btn.onclick = () => {
+              insertKey(char);
+              applyFilters();
+            };
+          }
+
+          rowDiv.appendChild(btn);
+        });
+
+        container.appendChild(rowDiv);
+      });
+
+      updateKeyLabels();
+    }
+
+    function insertKey(char) {
+      if (!focusedInput) return;
+      const insertChar = isShift && /^[a-zA-Z]$/.test(char) ? char.toUpperCase() : char;
+      const start = focusedInput.selectionStart;
+      const end = focusedInput.selectionEnd;
+      const value = focusedInput.value;
+      focusedInput.value = value.substring(0, start) + insertChar + value.substring(end);
+      focusedInput.selectionStart = focusedInput.selectionEnd = start + insertChar.length;
+      focusedInput.focus();
+    }
+
+    function deleteKey() {
+      if (!focusedInput) return;
+      const start = focusedInput.selectionStart;
+      const end = focusedInput.selectionEnd;
+      const value = focusedInput.value;
+      if (start > 0) {
+        focusedInput.value = value.substring(0, start - 1) + value.substring(end);
+        focusedInput.selectionStart = focusedInput.selectionEnd = start - 1;
+      }
+      focusedInput.focus();
+    }
+
+    function clearInput() {
+      if (!focusedInput) return;
+      focusedInput.value = "";
+      focusedInput.focus();
+    }
+
+    function toggleShift() {
+      isShift = !isShift;
+      updateKeyLabels();
+      const shiftKey = document.getElementById("searchShiftKey");
+      if (shiftKey) {
+        shiftKey.style.backgroundColor = isShift ? "#1a73e8" : "#555";
+        shiftKey.style.color = "#fff";
+      }
+    }
+
+    function updateKeyLabels() {
+      document.querySelectorAll('#searchKeyboard button[data-key-type="letter"]').forEach(btn => {
+        const base = btn.getAttribute("data-char");
+        btn.textContent = isShift ? base.toUpperCase() : base.toLowerCase();
+      });
+    }
+
+  </script>
+</body>
+</html>

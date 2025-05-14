@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script> 
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #EEF1FF, #D2DAFF);
+      min-height: 100vh;
+    }
+
+    .top-bar {
+      background: #B1B2FF;
+      padding: 20px 30px;
+      width: 100%;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .logo-container h2 {
+      color: #000;
+      font-size: 22px;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .nav-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      background: #FFFFFF;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+      padding: 16px 0; 
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-menu li {
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #5f6368;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 20px 20px 0 0;
+      position: relative;
+    }
+
+    .nav-menu li i {
+      font-size: 18px;
+    }
+
+    .nav-menu li:hover {
+      background: #F1F3F4;
+    }
+
+    .nav-menu li.active {
+      color: #1A73E8;
+      font-weight: bold;
+      background: #FFFFFF;
+      box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    html, body {
+      height: 100vh;
+      overflow:auto;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1700px;;
+      margin: 50px auto;
+      margin-top: 0px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 0px 30px 30px 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      min-height: 300px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .vertical-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100%;
+      background: #888;
+    }
+
+    .scan-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 50%;
+      gap: 10px;
+    }
+
+    .scan-buttons button {
+      padding: 15px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #B1B2FF;
+      color: black;
+      width: 500px;
+      height: 200px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .scan-buttons button:hover {
+      background: #6f71f5;
+    }
+
+    .scan-buttons button.active-scan {
+      background: #6f71f5 !important;
+    }
+
+    .enter-btn {
+      height: 50px;
+      background: #FFA500;
+    }
+
+    .enter-btn:hover {
+      background: #FF8C00;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0);
+      border-radius: 10px;
+      text-align: center;
+      width: 50%;
+      max-width: 700px;
+      height: 100%;
+    }
+
+    .equipment-table {
+      width: 100%;
+      margin-top: 15px;
+      border-collapse: collapse;
+      text-align: center;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(9, 9, 9, 0.1);
+    }
+
+    .equipment-table th, .equipment-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .equipment-table th {
+      background: #B1B2FF;
+      color: black;
+      font-weight: bold;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .borrow-btn, .clear-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+      width: 200px;
+      height: 50px;
+    }
+
+    .borrow-btn {
+      background: #1A73E8;
+    }
+
+    .borrow-btn:hover {
+      background: #1666C1;
+    }
+
+    .clear-btn {
+      background: #D32F2F;
+    }
+
+    .clear-btn:hover {
+      background: #B71C1C;
+    }
+
+    .toggle-container {
+      display: flex;
+      width: 680px;
+      margin-top: 170px;
+      margin-left: 85px;
+      margin-right: 50%;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .toggle-btn.active {
+      background: rgba(#D2DAFF, 0.7);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      font-weight: bold;
+      color: #1A73E8;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      width: 400px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .modal-content input {
+      width: 93%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .modal-content button:hover {
+      background: #45a049;
+    }
+
+    .remove-btn {
+      padding: 5px 10px;
+      font-size: 14px;
+      border: none;
+      background: #D32F2F;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .remove-btn:hover {
+        background: #B71C1C;
+    }
+
+    .return-btn {
+      padding: 8px 15px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      background: #FFA500;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .return-btn:hover {
+      background: #FF8C00;
+    }
+
+    #confirmYes {
+      background-color: #1A73E8;
+      color: white;
+    }
+
+    #confirmNo {
+      background-color: #D32F2F;
+      color: white;
+    }
+
+    #confirmYes:hover {
+      background-color: #1666C1;
+    }
+
+    #confirmNo:hover {
+      background-color: #B71C1C;
+    }
+
+    #successModal button {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    #successModal button:hover {
+      background-color: #45a049;
+    }
+
+    .logout-btn:hover {
+      color: red;
+    }
+
+    #virtualKeyboard button {
+      font-size: 22px;
+      padding: 16px 20px;
+      min-width: 50px;
+      background: #B1B2FF;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #virtualKeyboard button:hover {
+      background: #6f71f5;
+    }
+
+    #serialKeyboard button {
+      font-size: 20px;
+      padding: 14px 18px; 
+      min-width: 50px;
+      background: #B1B2FF;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #serialKeyboard button:hover {
+      background: #6f71f5;
+    }
+
+    #serialKeyboard .clear-key {
+      background: #D32F2F;
+      font-size: 20px;
+      color: white;
+    }
+
+    #serialKeyboard .clear-key:hover {
+      background: #B71C1C;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-container">
+      <img src="logo.png" alt="Logo"> 
+      <h2>Computer Engineering</h2>
+    </div>
+  </div>
+
+  <div class="nav-container">
+    <ul class="nav-menu">
+      <li id="home" onclick="navigateTo('dashboard.html')"><i class="fas fa-home"></i> Home</li>
+      <li id="equipment" onclick="navigateTo('equipment.html')"><i class="fas fa-tools"></i> Equipment</li>
+      <li id="history" onclick="navigateTo('history.html')"><i class="fas fa-history"></i> History</li>
+      <li id="user" onclick="navigateTo('user_info.html')"><i class="fas fa-user"></i> User</li>
+      <li id="about" onclick="navigateTo('about.html')"><i class="fas fa-info-circle"></i> About Us</li>
+      <li id="logout" onclick="confirmLogout()" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Log Out
+      </li>      
+    </ul>
+  </div>
+
+  <div class="toggle-container">
+    <button class="toggle-btn active" id="borrowBtn" onclick="toggleMode('borrow')"><i class="fas fa-hand-holding"></i>  Borrow</button>
+    <button class="toggle-btn" id="returnBtn" onclick="toggleMode('return')"><i class="fas fa-undo"></i>  Return</button>
+  </div>
+  
+  <div class="content">
+    <div class="scan-buttons">
+      <button id="scanUserIdBtn" onclick="scanUserId()">Scan User ID</button>
+      <button id="scanSerialBtn" onclick="scanSerialNumber()">Scan Equipment Serial Number</button>
+    </div>
+  
+    <div class="vertical-line"></div>
+  
+    <div class="user-info">
+      <p><strong>User ID:</strong> <span id="userId">-</span></p>
+      <p><strong>Username:</strong> <span id="username">-</span></p>
+
+      <table class="equipment-table">
+        <thead>
+            <tr>
+                <th>Serial Number</th>
+                <th>Equipment Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="equipmentTableBody">
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>    
+      
+      <div class="button-container">
+        <button class="borrow-btn" id="borrowReturnBtn" onclick="handleAction()">Check-Out</button>
+        <button class="clear-btn" onclick="clearTable()">Cancel</button>
+      </div>      
+      
+    </div>
+  </div>  
+
+  <div id="userIdModal" class="modal">
+    <div style="display: flex; gap: 20px; align-items: flex-start;">
+      <div class="modal-content">
+        <span class="close" onclick="closeUserIdModal()">&times;</span>
+        <h2>Scan User ID</h2>
+        <h3>or</h3>
+        <label for="scannedUserId"> Manually Enter User ID:</label>
+        <input type="text" id="scannedUserId" placeholder="Enter User ID">
+        <button onclick="submitScannedUserId()">Submit</button>
+      </div>
+
+      <div id="virtualKeyboard" style="display: none;">
+        <div style="display: grid; grid-template-columns: repeat(3, 60px); gap: 12px; background: #fff; padding: 20px 25px; border-radius: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+          <button onclick="addKey('1')">1</button>
+          <button onclick="addKey('2')">2</button>
+          <button onclick="addKey('3')">3</button>
+          <button onclick="addKey('4')">4</button>
+          <button onclick="addKey('5')">5</button>
+          <button onclick="addKey('6')">6</button>
+          <button onclick="addKey('7')">7</button>
+          <button onclick="addKey('8')">8</button>
+          <button onclick="addKey('9')">9</button>
+          <button onclick="addKey('-')">-</button>
+          <button onclick="addKey('0')">0</button>
+          <button onclick="deleteKey()">⌫</button>
+          <button onclick="clearVirtualInput()" style="grid-column: span 3; background: #D32F2F; color: white;">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="serialNumberModal" class="modal">
+    <div style="display: flex; gap: 20px; align-items: flex-start;">
+      <div class="modal-content">
+        <span class="close" onclick="closeSerialNumberModal()">&times;</span>
+        <h2>Scan Equipment Serial Number</h2>
+        <h3>or</h3>
+        <label for="scannedSerialNumber">Manually Enter Equipment Serial Number:</label>
+        <input type="text" id="scannedSerialNumber" placeholder="Enter Serial Number">
+        <button onclick="submitScannedSerialNumber()">Submit</button>
+      </div>
+
+      <div id="serialKeyboard" style="display: none;">
+        <div style="background: #fff; padding: 15px; border-radius: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.2); display: inline-block;">
+          <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+            <button onclick="addKeyToSerial('1')">1</button>
+            <button onclick="addKeyToSerial('2')">2</button>
+            <button onclick="addKeyToSerial('3')">3</button>
+            <button onclick="addKeyToSerial('4')">4</button>
+            <button onclick="addKeyToSerial('5')">5</button>
+            <button onclick="addKeyToSerial('6')">6</button>
+            <button onclick="addKeyToSerial('7')">7</button>
+            <button onclick="addKeyToSerial('8')">8</button>
+            <button onclick="addKeyToSerial('9')">9</button>
+            <button onclick="addKeyToSerial('0')">0</button>
+            <button onclick="addKeyToSerial('-')">-</button>
+          </div>
+
+          <div style="display: flex; gap: 6px; margin-bottom: 8px; margin-left: 25px;">
+            <button onclick="addKeyToSerial('Q')">Q</button>
+            <button onclick="addKeyToSerial('W')">W</button>
+            <button onclick="addKeyToSerial('E')">E</button>
+            <button onclick="addKeyToSerial('R')">R</button>
+            <button onclick="addKeyToSerial('T')">T</button>
+            <button onclick="addKeyToSerial('Y')">Y</button>
+            <button onclick="addKeyToSerial('U')">U</button>
+            <button onclick="addKeyToSerial('I')">I</button>
+            <button onclick="addKeyToSerial('O')">O</button>
+            <button onclick="addKeyToSerial('P')">P</button>
+          </div>
+
+          <div style="display: flex; gap: 6px; margin-bottom: 8px; margin-left: 15px;">
+            <button onclick="addKeyToSerial('A')">A</button>
+            <button onclick="addKeyToSerial('S')">S</button>
+            <button onclick="addKeyToSerial('D')">D</button>
+            <button onclick="addKeyToSerial('F')">F</button>
+            <button onclick="addKeyToSerial('G')">G</button>
+            <button onclick="addKeyToSerial('H')">H</button>
+            <button onclick="addKeyToSerial('J')">J</button>
+            <button onclick="addKeyToSerial('K')">K</button>
+            <button onclick="addKeyToSerial('L')">L</button>
+            <button class="clear-key" onclick="clearSerialInput()">Clear</button>
+          </div>
+
+          <div style="display: flex; gap: 6px; margin-bottom: 8px; margin-left: 19px;">
+            <button onclick="addKeyToSerial('Z')">Z</button>
+            <button onclick="addKeyToSerial('X')">X</button>
+            <button onclick="addKeyToSerial('C')">C</button>
+            <button onclick="addKeyToSerial('V')">V</button>
+            <button onclick="addKeyToSerial('B')">B</button>
+            <button onclick="addKeyToSerial('N')">N</button>
+            <button onclick="addKeyToSerial('M')">M</button>
+            <button onclick="moveCursorLeft()">←</button>
+            <button onclick="deleteSerialKey()">⌫</button>
+            <button onclick="moveCursorRight()">→</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmationModal" class="modal">
+    <div class="modal-content">
+      <p id="confirmationMessage">Are you sure?</p>
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+        <button id="confirmYes" style="background-color: #1A73E8; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Yes</button>
+        <button id="confirmNo" style="background-color: #D32F2F; color: white; padding: 10px 20px; border: none; border-radius: 5px;">No</button>
+      </div>
+    </div>
+  </div> 
+
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <p id="successMessage">Action completed successfully!</p>
+      <button onclick="closeSuccessModal()" style="margin-top: 15px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">OK</button>
+    </div>
+  </div>
+
+  <div id="errorModal" class="modal">
+    <div class="modal-content">
+      <p id="errorMessage">Something went wrong.</p>
+      <button onclick="closeErrorModal()" style="margin-top: 15px; padding: 10px 20px; background-color: #D32F2F; color: white; border: none; border-radius: 5px;">OK</button>
+    </div>
+  </div>  
+  
+  <script>
+    function navigateTo(page) {
+      window.location.href = page;
+    }
+
+    function setActiveTab() {
+      const currentPage = window.location.pathname.split("/").pop();
+      const navItems = document.querySelectorAll(".nav-menu li");
+
+      navItems.forEach(item => {
+        item.classList.remove("active");
+      });
+
+      if (currentPage.includes("dashboard")) {
+        document.getElementById("home").classList.add("active");
+      } else if (currentPage.includes("equipment")) {
+        document.getElementById("equipment").classList.add("active");
+      } else if (currentPage.includes("history")) {
+        document.getElementById("history").classList.add("active");
+      } else if (currentPage.includes("user_info")) {
+        document.getElementById("user").classList.add("active");
+      } else if (currentPage.includes("about")) {
+        document.getElementById("about").classList.add("active");
+      }
+    }
+
+    window.onload = setActiveTab;
+
+    function toggleMode(mode) {
+      let borrowBtn = document.getElementById("borrowBtn");
+      let returnBtn = document.getElementById("returnBtn");
+      let scanSerialBtn = document.getElementById("scanSerialBtn");
+      let actionButton = document.getElementById("borrowReturnBtn");
+
+      currentMode = mode;  
+
+      document.getElementById("userId").textContent = "-";
+      document.getElementById("username").textContent = "-";
+      document.getElementById("equipmentTableBody").innerHTML = `<tr><td>-</td><td>-</td><td>-</td></tr>`;
+
+      if (mode === "borrow") {
+        borrowBtn.classList.add("active");
+        returnBtn.classList.remove("active");
+        scanSerialBtn.style.display = "block"; 
+        actionButton.style.display = "inline-block";
+        actionButton.textContent = "Borrow"; 
+        actionButton.onclick = handleAction;
+    } else {
+        borrowBtn.classList.remove("active");
+        returnBtn.classList.add("active");
+        scanSerialBtn.style.display = "none"; 
+        actionButton.style.display = "none"; 
+    }
+    }
+
+    function scanUserId() {
+      document.getElementById("userIdModal").style.display = "flex";
+      setTimeout(() => {
+        document.getElementById("scannedUserId").focus();
+      }, 100);
+    }
+
+    function closeUserIdModal() {
+      document.getElementById("userIdModal").style.display = "none";
+    }
+
+    function submitScannedUserId() {
+    const newUserId = document.getElementById("scannedUserId").value.trim();
+    const currentUserId = document.getElementById("userId").textContent.trim();
+
+    if (newUserId === "") {
+      showError("Please enter a valid User ID.");
+      return;
+    }
+
+    const proceed = () => {
+      document.getElementById("userId").textContent = newUserId;
+
+      fetch("fetch_user_name.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `id_number=${encodeURIComponent(newUserId)}`
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "success") {
+            document.getElementById("username").textContent = data.full_name;
+
+            if (document.getElementById("returnBtn").classList.contains("active")) {
+              fetch("fetch_borrowed_items.php", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `user_id=${encodeURIComponent(newUserId)}`
+              })
+                .then(res => res.json())
+                .then(result => {
+                  const tableBody = document.getElementById("equipmentTableBody");
+                  tableBody.innerHTML = "";
+
+                  if (result.status === "success" && result.data.length > 0) {
+                    result.data.forEach(item => {
+                      const row = document.createElement("tr");
+                      row.innerHTML = `
+                        <td>${item.equipment_serial}</td>
+                        <td>${item.equipment_name}</td>
+                        <td><button class="return-btn" onclick="markAsReturned(this)">Return</button></td>
+                      `;
+                      tableBody.appendChild(row);
+                    });
+                  } else {
+                    tableBody.innerHTML = `<tr><td colspan="3">No borrowed items to return.</td></tr>`;
+                  }
+                });
+            }
+          } else {
+            showError("❌ User not found.");
+            document.getElementById("userId").textContent = "-";
+            document.getElementById("username").textContent = "-";
+          }
+
+          document.getElementById("scannedUserId").value = "";
+          closeUserIdModal();
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("Failed to fetch user.");
+          document.getElementById("scannedUserId").value = "";
+          closeUserIdModal();
+        });
+    };
+
+    if (currentUserId !== "-" && currentUserId !== newUserId) {
+      showConfirmation("A user is already selected. Do you want to clear the current user and scanned equipment?", function (confirmed) {
+        if (confirmed) {
+          autoClearTable();
+          proceed(); 
+        }
+      });
+    } else {
+      proceed();
+    }
+  }
+
+    function scanSerialNumber() {
+      document.getElementById("serialNumberModal").style.display = "flex";
+      setTimeout(() => {
+        document.getElementById("scannedSerialNumber").focus();
+      }, 100);
+    }
+
+    function closeSerialNumberModal() {
+      document.getElementById("serialNumberModal").style.display = "none";
+    }
+
+    function submitScannedSerialNumber() {
+      const serialNumber = document.getElementById("scannedSerialNumber").value.trim();
+
+      if (serialNumber === "") {
+        alert("Please enter a valid Serial Number.");
+        return;
+      }
+
+      fetch(`check_equipment_availability.php?serial=${encodeURIComponent(serialNumber)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (!data.exists) {
+            showError(`❌ Serial number "${serialNumber}" is not registered.`);
+            return;
+          }
+
+          if (!data.available) {
+            showError(`❌ Equipment with Serial Number "${serialNumber}" is currently not available.`);
+            return;
+          }
+
+          const equipmentName = data.equipment_name || "Unknown";
+          const tableBody = document.getElementById("equipmentTableBody");
+
+          const firstRow = tableBody.querySelector("tr");
+          if (firstRow && firstRow.children[0].textContent === "-") {
+            tableBody.removeChild(firstRow);
+          }
+
+          const alreadyAdded = Array.from(tableBody.querySelectorAll("tr")).some(row =>
+            row.children[0].textContent.trim() === serialNumber
+          );
+          if (alreadyAdded) {
+            showError("This equipment is already in the list.");
+            return;
+          }
+
+          const newRow = document.createElement("tr");
+          newRow.innerHTML = `
+            <td>${serialNumber}</td>
+            <td>${equipmentName}</td>
+            <td><button class="remove-btn" onclick="confirmRemoveRow(this)">Remove</button></td>
+          `;
+          tableBody.appendChild(newRow);
+
+          document.getElementById("scannedSerialNumber").value = "";
+          closeSerialNumberModal();
+        })
+        .catch(error => {
+          console.error("Error checking equipment:", error);
+          showError("An error occurred while checking equipment.");
+        });
+    }
+
+    async function handleAction() {
+      const mode = document.getElementById("borrowBtn").classList.contains("active") ? "borrow" : "return";
+      if (mode !== "borrow") return;
+
+      const userId = document.getElementById("userId").textContent.trim();
+      const username = document.getElementById("username").textContent.trim();
+
+      if (userId === "-" || username === "-") {
+        showSuccess("Please scan a user first.");
+        return;
+      }
+
+      const equipmentRows = document.querySelectorAll("#equipmentTableBody tr");
+      const equipmentList = [];
+
+      for (let row of equipmentRows) {
+        const serial = row.children[0].textContent.trim();
+        const name = row.children[1].textContent.trim();
+
+        if (serial !== "-" && name !== "-") {
+          const available = await checkAvailability(serial);
+          if (!available) {
+            alert(`❌ Equipment with Serial Number "${serial}" is not available.`);
+            return;
+          }
+          equipmentList.push({ serial, name });
+        }
+      }
+
+      if (equipmentList.length === 0) {
+        showError("❌ Please scan at least one equipment.");
+        return;
+      }
+
+      showConfirmation(`Confirm borrowing ${equipmentList.length} item(s) for ${username}?`, function (confirmed) {
+        if (!confirmed) return;
+
+        fetch("borrow_equipment.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: userId,
+            user_fullname: username,
+            equipment: equipmentList
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "success") {
+              showSuccess("✅ Borrowing successful!");
+              autoClearTable();
+            } else {
+              alert("Error: " + data.message);
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            alert("Borrowing failed.");
+          });
+      });
+    }
+
+  async function checkAvailability(serial) {
+    try {
+      const response = await fetch(`check_equipment_availability.php?serial=${encodeURIComponent(serial)}`);
+      const data = await response.json();
+      return data.available === true;
+    } catch (error) {
+      console.error("Error checking availability:", error);
+      return false;
+    }
+  }
+
+    function clearTable() {
+      showConfirmation("Are you sure you want to cancel and clear all data?", function (confirmed) {
+        if (!confirmed) return;
+        document.getElementById("userId").textContent = "-";
+        document.getElementById("username").textContent = "-";
+        document.getElementById("equipmentTableBody").innerHTML = `<tr><td>-</td><td>-</td><td>-</td></tr>`;
+      });
+    }
+
+    function markAsReturned(button) {
+      const row = button.parentElement.parentElement;
+      const serial = row.children[0].textContent.trim();
+      const userId = document.getElementById("userId").textContent.trim();
+
+      if (!serial || userId === "-") {
+        alert("Invalid return data.");
+        return;
+      }
+
+      showConfirmation(`Confirm return of equipment with serial number: ${serial}?`, function (confirmed) {
+        if (!confirmed) return;
+
+        fetch("return_equipment.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ serial, user_id: userId })
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === "success") {
+              showSuccess(data.message);
+              row.remove();
+
+              const tableBody = document.getElementById("equipmentTableBody");
+              if (tableBody.children.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="3">No borrowed items to return.</td></tr>`;
+              }
+            } else {
+              alert("Failed to return item.");
+            }
+          })
+          .catch(err => {
+            console.error("Return error:", err);
+            alert("An error occurred during return.");
+          });
+      });
+    }
+
+    function openModal() {
+      const isBorrow = document.getElementById("borrowBtn").classList.contains("active");
+
+      document.getElementById("manualUserId").value = "";
+      document.getElementById("manualSerialNumber").value = "";
+      document.getElementById("modalTitle").textContent = isBorrow ? "Enter Borrow Info Manually" : "Enter Return Info Manually";
+
+      document.getElementById("serialField").style.display = isBorrow ? "block" : "none";
+
+      document.getElementById("manualEntryModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("manualEntryModal").style.display = "none";
+    }
+
+    function submitManualEntry() {
+      const isBorrow = document.getElementById("borrowBtn").classList.contains("active");
+      const userId = document.getElementById("manualUserId").value.trim();
+      const serial = document.getElementById("manualSerialNumber").value.trim();
+      const currentUserId = document.getElementById("userId").textContent.trim();
+
+      if (userId === "") {
+        alert("Please enter a valid User ID.");
+        return;
+      }
+
+      if (currentUserId !== "-" && currentUserId !== userId) {
+        const confirmChange = confirm("A user is already selected. Do you want to replace them?");
+        if (!confirmChange) return;
+      }
+
+      document.getElementById("userId").textContent = userId;
+
+      fetch("fetch_user_name.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `id_number=${encodeURIComponent(userId)}`
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          document.getElementById("username").textContent = data.full_name;
+
+          if (isBorrow) {
+            if (serial === "") {
+              alert("Please enter a Serial Number.");
+              return;
+            }
+
+            fetch(`check_equipment_availability.php?serial=${encodeURIComponent(serial)}`)
+              .then(response => response.json())
+              .then(check => {
+                if (!check.exists) {
+                  showError(`❌ Serial number "${serial}" is not registered.`);
+                  return;
+                }
+
+                if (!check.available) {
+                  showError(`❌ Equipment with Serial Number "${serial}" is currently not available.`);
+                  return;
+                }
+
+                const equipmentName = check.equipment_name || "Unknown";
+                const tableBody = document.getElementById("equipmentTableBody");
+
+                const firstRow = tableBody.querySelector("tr");
+                if (firstRow && firstRow.children[0].textContent === "-") {
+                  tableBody.removeChild(firstRow);
+                }
+
+                const alreadyAdded = Array.from(tableBody.querySelectorAll("tr")).some(row =>
+                  row.children[0].textContent.trim() === serial
+                );
+                if (alreadyAdded) {
+                  alert("This equipment is already in the list.");
+                  return;
+                }
+
+                const newRow = document.createElement("tr");
+                newRow.innerHTML = `
+                  <td>${serial}</td>
+                  <td>${equipmentName}</td>
+                  <td><button class="remove-btn" onclick="this.parentElement.parentElement.remove()">Remove</button></td>
+                `;
+                tableBody.appendChild(newRow);
+
+                document.getElementById("manualUserId").value = "";
+                document.getElementById("manualSerialNumber").value = "";
+                closeModal();
+              })
+              .catch(error => {
+                console.error("Error checking equipment:", error);
+                alert("An error occurred while checking equipment.");
+              });
+
+          } else {
+            fetch("fetch_borrowed_items.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: `user_id=${encodeURIComponent(userId)}`
+            })
+            .then(res => res.json())
+            .then(result => {
+              const tableBody = document.getElementById("equipmentTableBody");
+              tableBody.innerHTML = "";
+
+              if (result.status === "success" && result.data.length > 0) {
+                result.data.forEach(item => {
+                  const row = document.createElement("tr");
+                  row.innerHTML = `
+                    <td>${item.equipment_serial}</td>
+                    <td>${item.equipment_name}</td>
+                    <td><button class="return-btn" onclick="markAsReturned(this)">Return</button></td>
+                  `;
+                  tableBody.appendChild(row);
+                });
+              } else {
+                tableBody.innerHTML = `<tr><td colspan="3">No borrowed items found.</td></tr>`;
+              }
+
+              document.getElementById("manualUserId").value = "";
+              document.getElementById("manualSerialNumber").value = "";
+              closeModal();
+            });
+          }
+        } else {
+          alert("❌ User not found.");
+          document.getElementById("userId").textContent = "-";
+          document.getElementById("username").textContent = "-";
+        }
+      })
+      .catch(error => {
+        console.error("User fetch error:", error);
+        alert("An error occurred while fetching user.");
+      });
+    }
+
+    function confirmRemoveRow(button) {
+      showConfirmation("Are you sure you want to remove this equipment?", function (confirmed) {
+        if (!confirmed) return;
+        button.parentElement.parentElement.remove();
+
+        const tableBody = document.getElementById("equipmentTableBody");
+        if (tableBody.children.length === 0) {
+          tableBody.innerHTML = `<tr><td>-</td><td>-</td><td>-</td></tr>`;
+        }
+      });
+    }
+
+    function autoClearTable() {
+      document.getElementById("userId").textContent = "-";
+      document.getElementById("username").textContent = "-";
+      document.getElementById("equipmentTableBody").innerHTML = `<tr><td>-</td><td>-</td><td>-</td></tr>`;
+    }
+
+    function confirmLogout() {
+      showConfirmation("Are you sure you want to log out?", function (confirmed) {
+        if (confirmed) {
+          navigateTo('login.html');
+        }
+      });
+    }
+
+    function showConfirmation(message, callback) {
+      const modal = document.getElementById("confirmationModal");
+      const messageBox = document.getElementById("confirmationMessage");
+      const yesBtn = document.getElementById("confirmYes");
+      const noBtn = document.getElementById("confirmNo");
+
+      messageBox.textContent = message;
+      modal.style.display = "flex";
+
+      const cleanup = () => {
+        modal.style.display = "none";
+        yesBtn.onclick = null;
+        noBtn.onclick = null;
+      };
+
+      yesBtn.onclick = () => {
+        cleanup();
+        callback(true);
+      };
+
+      noBtn.onclick = () => {
+        cleanup();
+        callback(false);
+      };
+    }
+
+    function showSuccess(message) {
+      document.getElementById("successMessage").textContent = message;
+      document.getElementById("successModal").style.display = "flex";
+    }
+
+    function closeSuccessModal() {
+      document.getElementById("successModal").style.display = "none";
+    }
+
+    function showError(message) {
+      document.getElementById("errorMessage").textContent = message;
+      document.getElementById("errorModal").style.display = "flex";
+    }
+
+    function closeErrorModal() {
+      document.getElementById("errorModal").style.display = "none";
+    }
+
+    let focusedInput = null;
+
+    document.getElementById("scannedUserId").addEventListener("focus", function () {
+      focusedInput = this;
+      document.getElementById("virtualKeyboard").style.display = "flex";
+    });
+
+    function addKey(char) {
+      if (focusedInput) {
+        focusedInput.value += char;
+      }
+    }
+
+    function deleteKey() {
+      if (focusedInput) {
+        focusedInput.value = focusedInput.value.slice(0, -1);
+      }
+    }
+
+    function closeUserIdModal() {
+      document.getElementById("userIdModal").style.display = "none";
+      document.getElementById("virtualKeyboard").style.display = "none";
+      focusedInput = null;
+    }
+
+    let focusedSerialInput = null;
+
+    document.getElementById("scannedSerialNumber").addEventListener("focus", function () {
+      focusedSerialInput = this;
+      document.getElementById("serialKeyboard").style.display = "block";
+    });
+
+    function addKeyToSerial(char) {
+      if (focusedSerialInput) {
+        const input = focusedSerialInput;
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const text = input.value;
+
+        // Insert character at cursor position
+        input.value = text.slice(0, start) + char + text.slice(end);
+        
+        // Move cursor after inserted character
+        input.setSelectionRange(start + 1, start + 1);
+        input.focus();
+      }
+    }
+
+    function deleteSerialKey() {
+      if (focusedSerialInput) {
+        const input = focusedSerialInput;
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const text = input.value;
+
+        if (start === end && start > 0) {
+          // Delete one character before cursor
+          input.value = text.slice(0, start - 1) + text.slice(end);
+          input.setSelectionRange(start - 1, start - 1);
+        } else {
+          // Delete selected range
+          input.value = text.slice(0, start) + text.slice(end);
+          input.setSelectionRange(start, start);
+        }
+
+        input.focus();
+      }
+    }
+
+    function closeSerialNumberModal() {
+      document.getElementById("serialNumberModal").style.display = "none";
+      document.getElementById("serialKeyboard").style.display = "none";
+      focusedSerialInput = null;
+    }
+
+    function moveCursorLeft() {
+      if (focusedSerialInput) {
+        const input = focusedSerialInput;
+        const pos = input.selectionStart;
+        if (pos > 0) {
+          input.setSelectionRange(pos - 1, pos - 1);
+          input.focus();
+        }
+      }
+    }
+
+    function moveCursorRight() {
+      if (focusedSerialInput) {
+        const input = focusedSerialInput;
+        const pos = input.selectionStart;
+        if (pos < input.value.length) {
+          input.setSelectionRange(pos + 1, pos + 1);
+          input.focus();
+        }
+      }
+    }
+
+    function clearSerialInput() {
+      if (focusedSerialInput) {
+        focusedSerialInput.value = '';
+        focusedSerialInput.focus();
+      }
+    }
+
+    function clearVirtualInput() {
+      if (focusedInput) {
+        focusedInput.value = '';
+        focusedInput.focus();
+      }
+    }
+  </script>
+</body>
+</html>
